@@ -134,9 +134,13 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         );
 
         $response = wp_remote_post($api_url, array(
+        	'timeout' => 60,
+		    'redirection' => 5,
+		    'blocking' => true,
             'method' => 'POST',
             'headers' => $headers,
             'body' => wp_json_encode($data),
+            'cookies' => array()
         ));
 
         // Menggunakan respons dari API jika diperlukan
