@@ -153,21 +153,21 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         } elseif ($http_status == 400) {
             // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
             $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user A.';
-            wc_add_notice($error_message .' '. $api_response, 'error');
+            wp_die($error_message, 'Error A', array('response' => $http_status));
         } elseif ($http_status == 409) {
             // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
             $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user B.';
-            wc_add_notice($error_message .' '. $api_response, 'error');
+            wp_die($error_message, 'Error B', array('response' => $http_status));
         } elseif ($http_status == 500) {
             // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
             $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user C.';
-            wc_add_notice($error_message .' '. $api_response, 'error');
+            wp_die($error_message, 'Error C', array('response' => $http_status));
         } else {
             // Menampilkan pemberitahuan umum jika kode respons tidak dikenali
-            wc_add_notice('An error occurred while creating the user D.' . $api_response, 'error');
+            wp_die($error_message, 'Error D', array('response' => $http_status));
         }
 
-        // Menambahkan header Access-Control-Expose-Headers untuk mengizinkan akses ke header respons
+         // Menambahkan header Access-Control-Expose-Headers untuk mengizinkan akses ke header respons
         header('Access-Control-Expose-Headers: X-Response');
 
         // Menampilkan respons API dalam header X-Response
