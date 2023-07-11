@@ -94,7 +94,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-fyfx-propfirm-user.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-fyfx-propfirm-user-functions.php';
 
 function filter_action_fyfx_propfirm_links( $links ) {
-     $links['settings'] = '<a href="https://fundyourfx.com">' . __( 'Settings', 'fyfx-propfirm-user' ) . '</a>';
+     $links['settings'] = '<a href="' . admin_url( 'options-general.php?page=fyfx_your_propfirm_plugin' ) . '">' . __( 'Settings', 'fyfx-propfirm-user' ) . '</a>';
      $links['support'] = '<a href="https://hypestacks.stoplight.io/docs/yourpropfirm-client-api/91741256b2999-create-new-user">' . __( 'Doc', 'fyfx-propfirm-user' ) . '</a>';
      // if( class_exists( 'Fyfx_Payment' ) ) {
      //  $links['upgrade'] = '<a href="https://fundyourfx.com">' . __( 'Upgrade', 'fyfx-propfirm-user' ) . '</a>';
