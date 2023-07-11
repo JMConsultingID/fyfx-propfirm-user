@@ -167,11 +167,6 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             wc_add_notice('An error occurred while creating the user D.' . $api_response, 'error');
         }
 
-        // Menambahkan script JavaScript untuk meneruskan respons API ke "console log"
-        echo '<script>';
-        echo 'console.log(' . json_encode($api_response) . ');';
-        echo '</script>';
-
         // Menambahkan header Access-Control-Expose-Headers untuk mengizinkan akses ke header respons
         header('Access-Control-Expose-Headers: X-Response');
 
