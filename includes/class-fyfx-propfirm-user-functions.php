@@ -222,7 +222,6 @@ function add_api_response_js_to_thankyou_page() {
             var apiResponse = <?php echo json_encode($api_response); ?>;
             console.log(apiResponse);
         </script>
-
-    }
+        <?php
 }
 add_action('woocommerce_thankyou', 'add_api_response_js_to_thankyou_page');
