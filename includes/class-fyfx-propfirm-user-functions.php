@@ -169,8 +169,18 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         }
 
         $api_response_test = "response";
-        // Menyimpan respons API sebagai metadata pesanan
-        update_post_meta($order_id, 'api_response',$api_response_test);
+
+        // Menambahkan header Access-Control-Expose-Headers untuk mengizinkan akses ke header respons
+        header('Access-Control-Expose-Headers: X-Response');
+        // Menampilkan respons API dalam header X-Response
+        header('X-Response: ' . $api_response);
+        // Menampilkan respons API pada "console log" menggunakan JavaScript pada halaman "Thank You"
+        if (is_order_received_page()) {
+            $script = '<script>console.log(\'' . addslashes($http_status) . '\');</script>';
+            echo $script;
+        }
+        // Menambahkan informasi respons API ke payload response pada halaman "Thank You"
+        add_filter('woocommerce_payment_successful_response', 'add_api_response_to_thankyou_page');
     }
 }
 
@@ -181,3 +191,35 @@ function display_order_notices() {
     wc_print_notices();
 }
 add_action('woocommerce_thankyou', 'display_order_notices');
+
+// Fungsi untuk menambahkan informasi respons API ke payload response pada halaman "Thank You"
+function add_api_response_to_thankyou_page($response) {
+    $api_response = get_api_response(); // Mendapatkan respons API dari header X-Response
+    if (!empty($api_response)) {
+        $response['api_response'] = $api_response;
+    }
+    return $response;
+}
+
+// Fungsi untuk mendapatkan respons API dari header X-Response
+function get_api_response() {
+    $headers = getallheaders();
+    if (isset($headers['X-Response'])) {
+        return $headers['X-Response'];
+    }
+    return '';
+}
+
+// Menambahkan data respons API ke halaman "Thank You"
+function add_api_response_js_to_thankyou_page() {
+    $order_id = absint(get_query_var('order-received'));
+    $api_response = get_post_meta($order_id, 'api_response', true);
+
+        ?>
+        <script>
+            var apiResponse = <?php echo json_encode($api_response); ?>;
+            console.log(apiResponse);
+        </script>
+        <?php
+}
+add_action('woocommerce_thankyou', 'add_api_response_js_to_thankyou_page');
