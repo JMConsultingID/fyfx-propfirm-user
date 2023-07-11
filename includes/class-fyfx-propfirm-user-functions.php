@@ -125,27 +125,27 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             'phone' => $phone
         );
 
-        // Mengirim data ke API menggunakan wp_remote_post()
+        // Mengirim data ke API menggunakan cURL
         $api_url = 'https://bqsyp740n4.execute-api.ap-southeast-1.amazonaws.com/client/v1/users';
         $headers = array(
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-            'X-Client-Key' =>  $api_key
+            'Accept: application/json',
+            'Content-Type: application/json',
+            'X-Client-Key: 18c98a659a174bd68c6380751ff821ac686b0f6dcba14e2497a01702d7f0584d'
         );
 
-        $response = wp_remote_post($api_url, array(
-        	'timeout' => 60,
-		    'redirection' => 5,
-		    'blocking' => true,
-            'method' => 'POST',
-            'headers' => $headers,
-            'body' => wp_json_encode($data),
-            'cookies' => array()
-        ));
+        $ch = curl_init($api_url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($api_data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HEADER, true); // Mengambil header respons        
+        $response = curl_exec($ch);
+        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Mendapatkan kode stat
+        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE); // Mendapatkan ukuran header
+        curl_close($ch);
 
         // Menggunakan respons dari API jika diperlukan
-        $http_status = wp_remote_retrieve_response_code($response); // Mendapatkan kode status HTTP
-        $api_response = wp_remote_retrieve_body($response); // Mendapatkan respons API dalam bentuk string
+        $api_response = substr($response, $header_size);
 
         if ($http_status == 201) {
             // Jika pengguna berhasil dibuat (kode respons: 201)
@@ -166,6 +166,17 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             // Menampilkan pemberitahuan umum jika kode respons tidak dikenali
             wc_add_notice('An error occurred while creating the user D.' . $api_response, 'error');
         }
+
+        // Menambahkan script JavaScript untuk meneruskan respons API ke "console log"
+        echo '<script>';
+        echo 'console.log(' . json_encode($api_response) . ');';
+        echo '</script>';
+
+        // Menambahkan header Access-Control-Expose-Headers untuk mengizinkan akses ke header respons
+        header('Access-Control-Expose-Headers: X-Response');
+
+        // Menampilkan respons API dalam header X-Response
+        header('X-Response: ' . $api_response);
     }
 }
 
