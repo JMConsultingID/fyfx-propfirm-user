@@ -46,6 +46,34 @@ function activate_fyfx_propfirm_user() {
 	Fyfx_Propfirm_User_Activator::activate();
 }
 
+if (!function_exists('is_plugin_active')) {
+    include_once(ABSPATH . '/wp-admin/includes/plugin.php');
+}
+
+/**
+* Check for the existence of WooCommerce and any other requirements
+*/
+function fyfx_propfirm_user_check_requirements() {
+    if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+        return true;
+    } else {
+        add_action( 'admin_notices', 'fyfx_propfirm_user_missing_wc_notice' );
+        return false;
+    }
+}
+
+/**
+* Display a message advising WooCommerce is required
+*/
+function fyfx_propfirm_user_missing_wc_notice() { 
+    $class = 'notice notice-error';
+    $message = __( 'FYFX Propfirm User requires WooCommerce to be installed and active.', 'fyfx-propfirm-user' );
+ 
+    printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) ); 
+}
+
+add_action( 'plugins_loaded', 'fyfx_propfirm_user_check_requirements' );
+
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-fyfx-propfirm-user-deactivator.php
@@ -63,6 +91,17 @@ register_deactivation_hook( __FILE__, 'deactivate_fyfx_propfirm_user' );
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-fyfx-propfirm-user.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-fyfx-propfirm-user-functions.php';
+
+unction filter_action_fyfx_propfirm_links( $links ) {
+     $links['settings'] = '<a href="https://fundyourfx.com">' . __( 'Settings', 'fyfx-propfirm-user' ) . '</a>';
+     $links['support'] = '<a href="https://fundyourfx.com">' . __( 'Doc', 'fyfx-propfirm-user' ) . '</a>';
+     // if( class_exists( 'Fyfx_Payment' ) ) {
+     //  $links['upgrade'] = '<a href="https://fundyourfx.com">' . __( 'Upgrade', 'fyfx-propfirm-user' ) . '</a>';
+     // }
+     return $links;
+}
+add_filter( 'plugin_action_links_fyfx-propfirm-user/fyfx-propfirm-user.php', 'filter_action_fyfx_propfirm_links', 10, 1 );
 
 /**
  * Begins execution of the plugin.
