@@ -112,7 +112,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         $phone = $order->get_billing_phone();
 
         // Prepare the data to be sent in the API request
-        $data = array(
+        $api_data = array(
             'email' => $user_email,
             'firstname' => $user_firstname,
             'lastname' => $user_lastname,
