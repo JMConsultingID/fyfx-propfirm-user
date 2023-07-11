@@ -125,27 +125,48 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             'phone' => $phone
         );
 
-        // Send the API request
-        $response = wp_remote_post(
-            $endpoint_url,
-            array(
-                'headers' => array(
-                	'Accept' => 'application/json',
-                    'Content-Type' => 'application/json',
-                    'X-Client-Key' =>  $api_key
-                ),
-                'body' => json_encode($data)
-            )
+        // Mengirim data ke API menggunakan wp_remote_post()
+        $api_url = $endpoint_url;
+        $headers = array(
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'X-Client-Key' =>  $api_key
         );
 
-        // Check the API response code
-        $response_code = wp_remote_retrieve_response_code($response);
-        if ($response_code == 201) {
-            // User created successfully
-            wc_add_notice('User created successfully.', 'success');
-        } elseif ($response_code == 400) {
-            // Error creating user
-            wc_add_notice('Error creating user. Please try again.', 'error');
+        $response = wp_remote_post($api_url, array(
+            'method' => 'POST',
+            'headers' => $headers,
+            'body' => wp_json_encode($data),
+        ));
+
+        // Menggunakan respons dari API jika diperlukan
+        $http_status = wp_remote_retrieve_response_code($response); // Mendapatkan kode status HTTP
+        $api_response = wp_remote_retrieve_body($response); // Mendapatkan respons API dalam bentuk string
+
+        if ($http_status == 201) {
+            // Jika pengguna berhasil dibuat (kode respons: 201)
+            wc_add_notice('User created successfully.' . $api_response, 'success');
+        } elseif ($http_status == 400) {
+            // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
+            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user A.';
+            wc_add_notice($error_message .' '. $api_response, 'error');
+        } elseif ($http_status == 409) {
+            // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
+            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user B.';
+            wc_add_notice($error_message .' '. $api_response, 'error');
+        } elseif ($http_status == 500) {
+            // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
+            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user C.';
+            wc_add_notice($error_message .' '. $api_response, 'error');
+        } else {
+            // Menampilkan pemberitahuan umum jika kode respons tidak dikenali
+            wc_add_notice('An error occurred while creating the user D.' . $api_response, 'error');
+        }
+
+        // Meneruskan respons API ke "console log" menggunakan JavaScript pada halaman "/checkout/order-received/"
+        if (is_order_received_page()) {
+            $script = "<script>console.log('" . addslashes($api_response) . "');</script>";
+            echo $script;
         }
     }
 }
