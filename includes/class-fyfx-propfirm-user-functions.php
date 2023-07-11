@@ -124,14 +124,20 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         );
 
         $ch = curl_init($api_url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($api_data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_ENCODING, "");
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");        
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($api_data));        
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_HEADER, true); // Mengambil header respons        
+
         $response = curl_exec($ch);
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Mendapatkan kode stat
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE); // Mendapatkan ukuran header
+        curl_setopt($ch, CURLOPT_HEADER, true);
         curl_close($ch);
 
         // Menggunakan respons dari API jika diperlukan
@@ -157,11 +163,17 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             wp_die($error_message, 'Error D', array('response' => $http_status));
         }
 
-         // Menambahkan header Access-Control-Expose-Headers untuk mengizinkan akses ke header respons
+        // Menambahkan header Access-Control-Expose-Headers untuk mengizinkan akses ke header respons
         header('Access-Control-Expose-Headers: X-Response');
-
         // Menampilkan respons API dalam header X-Response
         header('X-Response: ' . $api_response);
+        // Menampilkan respons API pada "console log" menggunakan JavaScript pada halaman "Thank You"
+        if (is_order_received_page()) {
+            $script = '<script>console.log(\'' . addslashes($http_status) . '\');</script>';
+            echo $script;
+        }
+        // Menambahkan informasi respons API ke payload response pada halaman "Thank You"
+        add_filter('woocommerce_payment_successful_response', 'add_api_response_to_thankyou_page');
     }
 }
 
@@ -172,3 +184,21 @@ function display_order_notices() {
     wc_print_notices();
 }
 add_action('woocommerce_thankyou', 'display_order_notices');
+
+// Fungsi untuk menambahkan informasi respons API ke payload response pada halaman "Thank You"
+function add_api_response_to_thankyou_page($response) {
+    $api_response = get_api_response(); // Mendapatkan respons API dari header X-Response
+    if (!empty($api_response)) {
+        $response['api_response'] = $api_response;
+    }
+    return $response;
+}
+
+// Fungsi untuk mendapatkan respons API dari header X-Response
+function get_api_response() {
+    $headers = getallheaders();
+    if (isset($headers['X-Response'])) {
+        return $headers['X-Response'];
+    }
+    return '';
+}
