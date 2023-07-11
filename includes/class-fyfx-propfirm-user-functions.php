@@ -181,26 +181,3 @@ function display_order_notices() {
     wc_print_notices();
 }
 add_action('woocommerce_thankyou', 'display_order_notices');
-
-// Fungsi untuk mendapatkan respons API dari header X-Response
-function get_api_response() {
-    $headers = getallheaders();
-    if (isset($headers['X-Response'])) {
-        return $headers['X-Response'];
-    }
-    return '';
-}
-
-// Menambahkan data respons API ke halaman "Thank You"
-function add_api_response_js_to_thankyou_page() {
-    $order_id = absint(get_query_var('order-received'));
-    $api_response = get_post_meta($order_id, 'api_response', true);
-
-        ?>
-        <script>
-            var apiResponse = <?php echo json_encode($api_response); ?>;
-            console.log(apiResponse);
-        </script>
-        <?php
-}
-add_action('woocommerce_thankyou', 'add_api_response_js_to_thankyou_page');
