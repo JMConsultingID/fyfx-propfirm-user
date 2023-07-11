@@ -52,6 +52,14 @@ function fyfx_your_propfirm_plugin_settings_fields() {
         'fyfx_your_propfirm_plugin_general'
     );
 
+    add_settings_field(
+        'fyfx_your_propfirm_plugin_enable_response_header',
+        'Display Response Header in Console Log',
+        'fyfx_your_propfirm_plugin_enable_response_header_callback',
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_general'
+    );
+
     register_setting(
         'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_endpoint_url'
@@ -60,6 +68,11 @@ function fyfx_your_propfirm_plugin_settings_fields() {
     register_setting(
         'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_api_key'
+    );
+
+    register_setting(
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_enable_response_header'
     );
 }
 add_action('admin_init', 'fyfx_your_propfirm_plugin_settings_fields');
@@ -76,6 +89,21 @@ function fyfx_your_propfirm_plugin_api_key_callback() {
     echo '<input type="text" name="fyfx_your_propfirm_plugin_api_key" value="' . $api_key . '" style="width: 400px;" />';
 }
 
+// Render enable response header field
+function fyfx_your_propfirm_plugin_enable_response_header_callback() {
+    $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
+    ?>
+    <label>
+        <input type="radio" name="fyfx_your_propfirm_plugin_enable_response_header" value="1" <?php checked($enable_response_header, 1); ?> />
+        Yes
+    </label>
+    <label>
+        <input type="radio" name="fyfx_your_propfirm_plugin_enable_response_header" value="0" <?php checked($enable_response_header, 0); ?> />
+        No
+    </label>
+    <?php
+}
+
 // Render general settings section callback
 function fyfx_your_propfirm_plugin_general_section_callback() {
     echo 'Configure the general settings for the FYFX Your Propfirm User Plugin.';
@@ -84,8 +112,8 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
 // Create user via API when successful payment is made
 function fyfx_your_propfirm_plugin_create_user($order_id) {
 	// Retrieve endpoint URL and API Key from plugin settings
-    $endpoint_url = esc_attr(get_option('woocommerce_create_user_plugin_endpoint_url'));
-    $api_key = esc_attr(get_option('woocommerce_create_user_plugin_api_key'));
+    $endpoint_url = esc_attr(get_option('fyfx_your_propfirm_plugin_endpoint_url'));
+    $api_key = esc_attr(get_option('fyfx_your_propfirm_plugin_api_key'));
 
 
     // Get the order object
@@ -216,14 +244,18 @@ function get_api_response() {
 
 // Menambahkan data respons API ke halaman "Thank You"
 function add_api_response_js_to_thankyou_page() {
-    $order_id = absint(get_query_var('order-received'));
-    $api_response = get_post_meta($order_id, 'api_response', true);
-
+    // Display API response header in inspect element
+    $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
+    if ($enable_response_header) {
+        $order_id = absint(get_query_var('order-received'));
+        $api_response = get_post_meta($order_id, 'api_response', true);
         ?>
         <script>
             var apiResponse = <?php echo json_encode($api_response); ?>;
             console.log(apiResponse);
         </script>
         <?php
+    }
+    
 }
 add_action('woocommerce_thankyou', 'add_api_response_js_to_thankyou_page');
