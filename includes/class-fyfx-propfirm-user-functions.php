@@ -126,7 +126,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         );
 
         // Mengirim data ke API menggunakan wp_remote_post()
-        $api_url = $endpoint_url;
+        $api_url = 'https://bqsyp740n4.execute-api.ap-southeast-1.amazonaws.com/client/v1/users';
         $headers = array(
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
