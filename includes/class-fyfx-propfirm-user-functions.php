@@ -83,46 +83,36 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
 
 // Create user via API when successful payment is made
 function fyfx_your_propfirm_plugin_create_user($order_id) {
-    // Retrieve endpoint URL and API Key from plugin settings
-    $endpoint_url = esc_attr(get_option('fyfx_your_propfirm_plugin_endpoint_url'));
-    $api_key = esc_attr(get_option('fyfx_your_propfirm_plugin_api_key'));
-
-    // Check if endpoint URL and API Key are provided
-    if (empty($endpoint_url) || empty($api_key)) {
-        return;
-    }
-
     // Get the order object
     $order = wc_get_order($order_id);
 
-    // Check if the order is paid
+    // Memeriksa apakah pembayaran telah selesai
     if ($order->is_paid()) {
-        // Get user details from the order
         $user_email = $order->get_billing_email();
-        $user_firstname = $order->get_billing_first_name();
-        $user_lastname = $order->get_billing_last_name();
+        $user_first_name = $order->get_billing_first_name();
+        $user_last_name = $order->get_billing_last_name();
 
         // Set additional user details
         $program_id = '649fd5c99c1c3b382bc5ad01';
         $mt_version = 'MT4';
-        $address_line = $order->get_billing_address_1();
-        $city = $order->get_billing_city();
-        $zip_code = $order->get_billing_postcode();
-        $country = $order->get_billing_country();
-        $phone = $order->get_billing_phone();
+        $user_address = $order->get_billing_address_1();
+        $user_city = $order->get_billing_city();
+        $user_zip_code = $order->get_billing_postcode();
+        $user_country = $order->get_billing_country();
+        $user_phone = $order->get_billing_phone();
 
-        // Prepare the data to be sent in the API request
+        // Menyiapkan data untuk dikirim ke API
         $api_data = array(
             'email' => $user_email,
-            'firstname' => $user_firstname,
-            'lastname' => $user_lastname,
+            'firstname' => $user_first_name,
+            'lastname' => $user_last_name,
             'programId' => $program_id,
             'mtVersion' => $mt_version,
-            'addressLine' => $address_line,
-            'city' => $city,
-            'zipCode' => $zip_code,
-            'country' => $country,
-            'phone' => $phone
+            'addressLine' => $user_address,
+            'city' => $user_city,
+            'zipCode' => $user_zip_code,
+            'country' => $user_country,
+            'phone' => $user_phone
         );
 
         // Mengirim data ke API menggunakan cURL
