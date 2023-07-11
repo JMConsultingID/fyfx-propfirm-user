@@ -169,6 +169,9 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         }
 
         $api_response_test = "response";
+        
+        // Menyimpan respons API sebagai metadata pesanan
+        update_post_meta($order_id, 'api_response',$api_response_test);
 
         // Menambahkan header Access-Control-Expose-Headers untuk mengizinkan akses ke header respons
         header('Access-Control-Expose-Headers: X-Response');
