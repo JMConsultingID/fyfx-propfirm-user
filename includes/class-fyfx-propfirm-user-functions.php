@@ -116,6 +116,11 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
     $endpoint_url = esc_attr(get_option('fyfx_your_propfirm_plugin_endpoint_url'));
     $api_key = esc_attr(get_option('fyfx_your_propfirm_plugin_api_key'));
 
+    // Check if endpoint URL and API Key are provided
+    if (empty($endpoint_url) || empty($api_key)) {
+        return;
+    }
+
 
     // Get the order object
     $order = wc_get_order($order_id);
