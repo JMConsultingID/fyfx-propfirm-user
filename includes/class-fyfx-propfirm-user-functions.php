@@ -54,6 +54,14 @@ function fyfx_your_propfirm_plugin_settings_fields() {
     );
 
     add_settings_field(
+        'fyfx_your_propfirm_plugin_request_method',
+        'Request Method',
+        'fyfx_your_propfirm_plugin_request_method_callback',
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_general'
+    );
+
+    add_settings_field(
         'fyfx_your_propfirm_plugin_enable_response_header',
         'Display Response Header in Console Log',
         'fyfx_your_propfirm_plugin_enable_response_header_callback',
@@ -73,6 +81,14 @@ function fyfx_your_propfirm_plugin_settings_fields() {
 
     register_setting(
         'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_request_method',
+        array(
+            'sanitize_callback' => 'sanitize_text_field'
+        )
+    );
+
+    register_setting(
+        'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_enable_response_header'
     );
 }
@@ -88,6 +104,17 @@ function fyfx_your_propfirm_plugin_endpoint_url_callback() {
 function fyfx_your_propfirm_plugin_api_key_callback() {
     $api_key = esc_attr(get_option('fyfx_your_propfirm_plugin_api_key'));
     echo '<input type="text" name="fyfx_your_propfirm_plugin_api_key" value="' . $api_key . '" style="width: 400px;" />';
+}
+
+// Render request method field
+function fyfx_your_propfirm_plugin_request_method_callback() {
+    $request_method = get_option('fyfx_your_propfirm_plugin_request_method');
+    ?>
+    <select name="fyfx_your_propfirm_plugin_request_method">
+        <option value="curl" <?php selected($request_method, 'curl'); ?>>CURL</option>
+        <option value="wp_remote_post" <?php selected($request_method, 'wp_remote_post'); ?>>WP_REMOTE_POST</option>
+    </select>
+    <?php
 }
 
 // Render enable response header field
