@@ -13,7 +13,7 @@
  * @package           Fyfx_Propfirm_User
  *
  * @wordpress-plugin
- * Plugin Name:       A - FYFX Propfirm User
+ * Plugin Name:       A - FYFX Propfirm User with Hypestacks
  * Plugin URI:        https://fundyourfx.com
  * Description:       This Plugin to Create User or Account to FYFX Dashboard Your Propfirm
  * Version:           1.0.0
@@ -95,7 +95,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-fyfx-propfirm-user-functio
 
 function filter_action_fyfx_propfirm_links( $links ) {
      $links['settings'] = '<a href="https://fundyourfx.com">' . __( 'Settings', 'fyfx-propfirm-user' ) . '</a>';
-     $links['support'] = '<a href="https://fundyourfx.com">' . __( 'Doc', 'fyfx-propfirm-user' ) . '</a>';
+     $links['support'] = '<a href="https://hypestacks.stoplight.io/docs/yourpropfirm-client-api/91741256b2999-create-new-user">' . __( 'Doc', 'fyfx-propfirm-user' ) . '</a>';
      // if( class_exists( 'Fyfx_Payment' ) ) {
      //  $links['upgrade'] = '<a href="https://fundyourfx.com">' . __( 'Upgrade', 'fyfx-propfirm-user' ) . '</a>';
      // }
