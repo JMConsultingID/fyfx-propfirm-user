@@ -1,25 +1,25 @@
 <?php
 // Add plugin settings page
-function woocommerce_create_user_plugin_settings_page() {
+function fyfx_your_propfirm_plugin_settings_page() {
     add_options_page(
         'FYFX Your Propfirm User Plugin',
         'FYFX Your Propfirm User',
         'manage_options',
-        'woocommerce_create_user_plugin',
-        'woocommerce_create_user_plugin_settings_page_content'
+        'fyfx_your_propfirm_plugin',
+        'fyfx_your_propfirm_plugin_settings_page_content'
     );
 }
-add_action('admin_menu', 'woocommerce_create_user_plugin_settings_page');
+add_action('admin_menu', 'fyfx_your_propfirm_plugin_settings_page');
 
 // Render settings page content
-function woocommerce_create_user_plugin_settings_page_content() {
+function fyfx_your_propfirm_plugin_settings_page_content() {
     ?>
     <div class="wrap">
         <h2>WooCommerce Create User Plugin Settings</h2>
         <form method="post" action="options.php">
             <?php
-                settings_fields('woocommerce_create_user_plugin_settings');
-                do_settings_sections('woocommerce_create_user_plugin_settings');
+                settings_fields('fyfx_your_propfirm_plugin_settings');
+                do_settings_sections('fyfx_your_propfirm_plugin_settings');
                 submit_button();
             ?>
         </form>
@@ -28,64 +28,64 @@ function woocommerce_create_user_plugin_settings_page_content() {
 }
 
 // Add plugin settings fields
-function woocommerce_create_user_plugin_settings_fields() {
+function fyfx_your_propfirm_plugin_settings_fields() {
     add_settings_section(
-        'woocommerce_create_user_plugin_general',
+        'fyfx_your_propfirm_plugin_general',
         'General Settings',
-        'woocommerce_create_user_plugin_general_section_callback',
-        'woocommerce_create_user_plugin_settings'
+        'fyfx_your_propfirm_plugin_general_section_callback',
+        'fyfx_your_propfirm_plugin_settings'
     );
 
     add_settings_field(
-        'woocommerce_create_user_plugin_endpoint_url',
+        'fyfx_your_propfirm_plugin_endpoint_url',
         'Endpoint URL',
-        'woocommerce_create_user_plugin_endpoint_url_callback',
-        'woocommerce_create_user_plugin_settings',
-        'woocommerce_create_user_plugin_general'
+        'fyfx_your_propfirm_plugin_endpoint_url_callback',
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_general'
     );
 
     add_settings_field(
-        'woocommerce_create_user_plugin_api_key',
+        'fyfx_your_propfirm_plugin_api_key',
         'API Key',
-        'woocommerce_create_user_plugin_api_key_callback',
-        'woocommerce_create_user_plugin_settings',
-        'woocommerce_create_user_plugin_general'
+        'fyfx_your_propfirm_plugin_api_key_callback',
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_general'
     );
 
     register_setting(
-        'woocommerce_create_user_plugin_settings',
-        'woocommerce_create_user_plugin_endpoint_url'
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_endpoint_url'
     );
 
     register_setting(
-        'woocommerce_create_user_plugin_settings',
-        'woocommerce_create_user_plugin_api_key'
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_api_key'
     );
 }
-add_action('admin_init', 'woocommerce_create_user_plugin_settings_fields');
+add_action('admin_init', 'fyfx_your_propfirm_plugin_settings_fields');
 
 // Render endpoint URL field
-function woocommerce_create_user_plugin_endpoint_url_callback() {
-    $endpoint_url = esc_attr(get_option('woocommerce_create_user_plugin_endpoint_url'));
-    echo '<input type="text" name="woocommerce_create_user_plugin_endpoint_url" value="' . $endpoint_url . '" />';
+function fyfx_your_propfirm_plugin_endpoint_url_callback() {
+    $endpoint_url = esc_attr(get_option('fyfx_your_propfirm_plugin_endpoint_url'));
+    echo '<input type="text" name="fyfx_your_propfirm_plugin_endpoint_url" value="' . $endpoint_url . '" />';
 }
 
 // Render API Key field
-function woocommerce_create_user_plugin_api_key_callback() {
-    $api_key = esc_attr(get_option('woocommerce_create_user_plugin_api_key'));
-    echo '<input type="text" name="woocommerce_create_user_plugin_api_key" value="' . $api_key . '" />';
+function fyfx_your_propfirm_plugin_api_key_callback() {
+    $api_key = esc_attr(get_option('fyfx_your_propfirm_plugin_api_key'));
+    echo '<input type="text" name="fyfx_your_propfirm_plugin_api_key" value="' . $api_key . '" />';
 }
 
 // Render general settings section callback
-function woocommerce_create_user_plugin_general_section_callback() {
+function fyfx_your_propfirm_plugin_general_section_callback() {
     echo 'Configure the general settings for the WooCommerce Create User Plugin.';
 }
 
 // Create user via API when successful payment is made
-function woocommerce_create_user_plugin_create_user($order_id) {
+function fyfx_your_propfirm_plugin_create_user($order_id) {
     // Retrieve endpoint URL and API Key from plugin settings
-    $endpoint_url = esc_attr(get_option('woocommerce_create_user_plugin_endpoint_url'));
-    $api_key = esc_attr(get_option('woocommerce_create_user_plugin_api_key'));
+    $endpoint_url = esc_attr(get_option('fyfx_your_propfirm_plugin_endpoint_url'));
+    $api_key = esc_attr(get_option('fyfx_your_propfirm_plugin_api_key'));
 
     // Check if endpoint URL and API Key are provided
     if (empty($endpoint_url) || empty($api_key)) {
@@ -149,4 +149,4 @@ function woocommerce_create_user_plugin_create_user($order_id) {
         }
     }
 }
-add_action('woocommerce_thankyou', 'woocommerce_create_user_plugin_create_user');
+add_action('woocommerce_thankyou', 'fyfx_your_propfirm_plugin_create_user');
