@@ -2,8 +2,8 @@
 // Add plugin settings page
 function woocommerce_create_user_plugin_settings_page() {
     add_options_page(
-        'WooCommerce Create User Plugin',
-        'Create User Plugin',
+        'FYFX Your Propfirm User Plugin',
+        'FYFX Your Propfirm User',
         'manage_options',
         'woocommerce_create_user_plugin',
         'woocommerce_create_user_plugin_settings_page_content'
