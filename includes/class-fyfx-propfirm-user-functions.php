@@ -1,8 +1,9 @@
 <?php
 // Add plugin settings page
 function fyfx_your_propfirm_plugin_settings_page() {
-    add_options_page(
-        'FYFX Your Propfirm User Plugin',
+    add_submenu_page(
+        'woocommerce',
+        'FYFX Your Propfirm',
         'FYFX Your Propfirm',
         'manage_options',
         'fyfx_your_propfirm_plugin',
