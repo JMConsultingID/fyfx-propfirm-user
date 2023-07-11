@@ -15,7 +15,7 @@ add_action('admin_menu', 'fyfx_your_propfirm_plugin_settings_page');
 function fyfx_your_propfirm_plugin_settings_page_content() {
     ?>
     <div class="wrap">
-        <h2>WooCommerce Create User Plugin Settings</h2>
+        <h2>FYFX Your Propfirm User Plugin Settings</h2>
         <form method="post" action="options.php">
             <?php
                 settings_fields('fyfx_your_propfirm_plugin_settings');
@@ -78,7 +78,7 @@ function fyfx_your_propfirm_plugin_api_key_callback() {
 
 // Render general settings section callback
 function fyfx_your_propfirm_plugin_general_section_callback() {
-    echo 'Configure the general settings for the WooCommerce Create User Plugin.';
+    echo 'Configure the general settings for the FYFX Your Propfirm User Plugin.';
 }
 
 // Create user via API when successful payment is made
