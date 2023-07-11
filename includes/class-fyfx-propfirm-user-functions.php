@@ -154,18 +154,18 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         } elseif ($http_status == 400) {
             // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
             $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user A.';
-            wp_die($error_message, 'Error A', array('response' => $http_status));
+            wc_add_notice($error_message .' '. $api_response, 'error');
         } elseif ($http_status == 409) {
             // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
             $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user B.';
-            wp_die($error_message, 'Error B', array('response' => $http_status));
+            wc_add_notice($error_message .' '. $api_response, 'error');
         } elseif ($http_status == 500) {
             // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
             $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user C.';
-            wp_die($error_message, 'Error C', array('response' => $http_status));
+            wc_add_notice($error_message .' '. $api_response, 'error');
         } else {
             // Menampilkan pemberitahuan umum jika kode respons tidak dikenali
-            wp_die($error_message, 'Error D', array('response' => $http_status));
+            wc_add_notice($error_message .' '. $api_response, 'error');
         }
 
         $api_response_test = "response";
