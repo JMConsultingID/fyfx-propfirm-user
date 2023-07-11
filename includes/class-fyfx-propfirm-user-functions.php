@@ -3,7 +3,7 @@
 function fyfx_your_propfirm_plugin_settings_page() {
     add_options_page(
         'FYFX Your Propfirm User Plugin',
-        'FYFX Your Propfirm User',
+        'FYFX Your Propfirm',
         'manage_options',
         'fyfx_your_propfirm_plugin',
         'fyfx_your_propfirm_plugin_settings_page_content'
