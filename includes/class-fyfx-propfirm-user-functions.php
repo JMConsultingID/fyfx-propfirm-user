@@ -162,12 +162,13 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             // Menampilkan pemberitahuan umum jika kode respons tidak dikenali
             wc_add_notice('An error occurred while creating the user D.' . $api_response, 'error');
         }
-
-        // Meneruskan respons API ke "console log" menggunakan JavaScript pada halaman "/checkout/order-received/"
-        if (is_order_received_page()) {
-            $script = "<script>console.log('" . addslashes($api_response) . "');</script>";
-            echo $script;
-        }
     }
 }
-add_action('woocommerce_thankyou', 'fyfx_your_propfirm_plugin_create_user');
+
+add_action('woocommerce_payment_complete', 'fyfx_your_propfirm_plugin_create_user');
+
+// Menampilkan pemberitahuan pada halaman "Thank You"
+function display_order_notices() {
+    wc_print_notices();
+}
+add_action('woocommerce_thankyou', 'display_order_notices');
