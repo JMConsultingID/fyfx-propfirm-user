@@ -67,13 +67,13 @@ add_action('admin_init', 'fyfx_your_propfirm_plugin_settings_fields');
 // Render endpoint URL field
 function fyfx_your_propfirm_plugin_endpoint_url_callback() {
     $endpoint_url = esc_attr(get_option('fyfx_your_propfirm_plugin_endpoint_url'));
-    echo '<input type="text" name="fyfx_your_propfirm_plugin_endpoint_url" value="' . $endpoint_url . '" />';
+    echo '<input type="text" name="fyfx_your_propfirm_plugin_endpoint_url" value="' . $endpoint_url . '" style="width: 400px;" />';
 }
 
 // Render API Key field
 function fyfx_your_propfirm_plugin_api_key_callback() {
     $api_key = esc_attr(get_option('fyfx_your_propfirm_plugin_api_key'));
-    echo '<input type="text" name="fyfx_your_propfirm_plugin_api_key" value="' . $api_key . '" />';
+    echo '<input type="text" name="fyfx_your_propfirm_plugin_api_key" value="' . $api_key . '" style="width: 400px;" />';
 }
 
 // Render general settings section callback
