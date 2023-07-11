@@ -153,15 +153,15 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             wc_add_notice('User created successfully.' . $api_response, 'success');
         } elseif ($http_status == 400) {
             // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
-            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user A.';
+            $error_message = isset($api_response['errors']) ? $api_response['errors'] : 'An error occurred while creating the user A.';
             wc_add_notice($error_message .' '. $api_response, 'error');
         } elseif ($http_status == 409) {
             // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
-            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user B.';
+            $error_message = isset($api_response['errors']) ? $api_response['errors'] : 'An error occurred while creating the user B.';
             wc_add_notice($error_message .' '. $api_response, 'error');
         } elseif ($http_status == 500) {
             // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
-            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user C.';
+            $error_message = isset($api_response['errors']) ? $api_response['errors'] : 'An error occurred while creating the user C.';
             wc_add_notice($error_message .' '. $api_response, 'error');
         } else {
         	$error_message = isset($api_response['message']) ? $api_response['message'] : 'An error occurred while creating the user D.';
