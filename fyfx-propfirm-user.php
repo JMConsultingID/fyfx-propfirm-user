@@ -93,7 +93,7 @@ register_deactivation_hook( __FILE__, 'deactivate_fyfx_propfirm_user' );
 require plugin_dir_path( __FILE__ ) . 'includes/class-fyfx-propfirm-user.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-fyfx-propfirm-user-functions.php';
 
-unction filter_action_fyfx_propfirm_links( $links ) {
+function filter_action_fyfx_propfirm_links( $links ) {
      $links['settings'] = '<a href="https://fundyourfx.com">' . __( 'Settings', 'fyfx-propfirm-user' ) . '</a>';
      $links['support'] = '<a href="https://fundyourfx.com">' . __( 'Doc', 'fyfx-propfirm-user' ) . '</a>';
      // if( class_exists( 'Fyfx_Payment' ) ) {
