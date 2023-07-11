@@ -217,7 +217,7 @@ function get_api_response() {
 }
 
 // Menambahkan data respons API ke halaman "Thank You"
-function add_api_response_to_thankyou_page() {
+function add_api_response_js_to_thankyou_page() {
     $order_id = absint(get_query_var('order-received'));
     $api_response = get_post_meta($order_id, 'api_response', true);
 
@@ -230,4 +230,4 @@ function add_api_response_to_thankyou_page() {
         <?php
     }
 }
-add_action('woocommerce_thankyou', 'add_api_response_to_thankyou_page');
+add_action('woocommerce_thankyou', 'add_api_response_js_to_thankyou_page');
