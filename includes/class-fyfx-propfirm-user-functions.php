@@ -155,11 +155,11 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         );
 
         // Mengirim data ke API menggunakan cURL
-        $api_url = 'https://payment-staging.fundyourfx.com/wp-json/wp/v2/posts';
+        $api_url = $endpoint_url;
         $headers = array(
             'Accept: application/json',
             'Content-Type: application/json',
-            'X-Client-Key: 18c98a659a174bd68c6380751ff821ac686b0f6dcba14e2497a01702d7f0584d'
+            'X-Client-Key: '.$api_key
         );
 
         $ch = curl_init($api_url);
