@@ -87,11 +87,6 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
     $endpoint_url = esc_attr(get_option('woocommerce_create_user_plugin_endpoint_url'));
     $api_key = esc_attr(get_option('woocommerce_create_user_plugin_api_key'));
 
-    // Check if endpoint URL and API Key are provided
-    if (empty($endpoint_url) || empty($api_key)) {
-        return;
-    }
-
 
     // Get the order object
     $order = wc_get_order($order_id);
@@ -173,8 +168,9 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             wp_die($error_message, 'Error D', array('response' => $http_status));
         }
 
+        $api_response_test = "response";
         // Menyimpan respons API sebagai metadata pesanan
-        update_post_meta($order_id, 'api_response', $api_response);
+        update_post_meta($order_id, 'api_response',$api_response_test);
 
         // Menambahkan header Access-Control-Expose-Headers untuk mengizinkan akses ke header respons
         header('Access-Control-Expose-Headers: X-Response');
@@ -221,13 +217,12 @@ function add_api_response_js_to_thankyou_page() {
     $order_id = absint(get_query_var('order-received'));
     $api_response = get_post_meta($order_id, 'api_response', true);
 
-    if (!empty($api_response)) {
         ?>
         <script>
             var apiResponse = <?php echo json_encode($api_response); ?>;
             console.log(apiResponse);
         </script>
-        <?php
+
     }
 }
 add_action('woocommerce_thankyou', 'add_api_response_js_to_thankyou_page');
