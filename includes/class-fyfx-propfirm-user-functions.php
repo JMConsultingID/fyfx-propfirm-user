@@ -189,7 +189,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
 
         // Set additional user details
         $program_id = '649fd5c99c1c3b382bc5ad01';
-        $mt_version = 'MT4';
+        $mt_version = 'MT5';
         $user_address = $order->get_billing_address_1();
         $user_city = $order->get_billing_city();
         $user_zip_code = $order->get_billing_postcode();
