@@ -164,21 +164,23 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
     echo 'Configure the general settings for the FYFX Your Propfirm User Plugin.';
 }
 
-// function customize_checkout_mt_ver_fields($fields) {
-//     $fields['billing']['billing_address_2'] = array(
-//         'label'       => __('MT Version', 'woocommerce'),
-//         'required'    => true,
-//         'class'       => array('form-row-wide'),
-//         'type'        => 'select',
-//         'options'     => array(
-//             'mt4' => __('MT Version 4', 'woocommerce'),
-//             'mt5' => __('MT Version 5', 'woocommerce')
-//         )
-//     );
+// Fungsi untuk menambahkan bidang kustom ke dalam formulir checkout
+function add_custom_checkout_field($fields) {
+    $fields['billing']['mt_version'] = array(
+        'type' => 'select',
+        'label' => __('MT Version', 'woocommerce'),
+        'required' => true,
+        'class' => array('form-row-wide'),
+        'options' => array(
+            '' => __('Pilih MT Version', 'woocommerce'),
+            'MT4' => __('MT Version 4', 'woocommerce'),
+            'MT5' => __('MT Version 5', 'woocommerce')
+        )
+    );
 
-//     return $fields;
-// }
-// add_filter('woocommerce_checkout_fields', 'customize_checkout_mt_ver_fields');
+    return $fields;
+}
+add_filter('woocommerce_checkout_fields', 'add_custom_checkout_field');
 
 // Create user via API when successful payment is made
 function fyfx_your_propfirm_plugin_create_user($order_id) {
