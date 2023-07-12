@@ -112,7 +112,7 @@ function fyfx_your_propfirm_plugin_request_method_callback() {
     ?>
     <select name="fyfx_your_propfirm_plugin_request_method">
         <option value="curl" <?php selected($request_method, 'curl'); ?>>CURL</option>
-        <option value="wp_remote_post" <?php selected($request_method, 'wp_remote_post'); ?> selected>WP REMOTE POST</option>
+        <option value="wp_remote_post" <?php selected($request_method, 'wp_remote_post'); ?>>WP REMOTE POST</option>
     </select>
     <?php
 }
