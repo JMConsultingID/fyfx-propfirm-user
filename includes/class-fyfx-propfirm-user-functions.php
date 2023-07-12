@@ -38,6 +38,14 @@ function fyfx_your_propfirm_plugin_settings_fields() {
     );
 
     add_settings_field(
+        'fyfx_your_propfirm_plugin_enabled',
+        'Enable Plugin',
+        'fyfx_your_propfirm_plugin_enabled_callback',
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_general'
+    );
+
+    add_settings_field(
         'fyfx_your_propfirm_plugin_endpoint_url',
         'Endpoint URL',
         'fyfx_your_propfirm_plugin_endpoint_url_callback',
@@ -67,6 +75,14 @@ function fyfx_your_propfirm_plugin_settings_fields() {
         'fyfx_your_propfirm_plugin_enable_response_header_callback',
         'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_general'
+    );
+
+    register_setting(
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_enabled',
+        array(
+            'sanitize_callback' => 'sanitize_text_field'
+        )
     );
 
     register_setting(
@@ -153,7 +169,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
     // Get the order object
     $order = wc_get_order($order_id);
 
-    // Memeriksa apakah pembayaran telah selesai
+
     if ($order->is_paid()) {
         $user_email = $order->get_billing_email();
         $user_first_name = $order->get_billing_first_name();
@@ -168,7 +184,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         $user_country = $order->get_billing_country();
         $user_phone = $order->get_billing_phone();
 
-        // Menyiapkan data untuk dikirim ke API
+
         $api_data = array(
             'email' => $user_email,
             'firstname' => $user_first_name,
@@ -185,11 +201,11 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
 
         // Send the API request
         if ($request_method === 'curl') {
-            $response = fyfx_your_propfirm_plugin_send_curl_request($endpoint_url, $api_key, $data);
+            $response = fyfx_your_propfirm_plugin_send_curl_request($endpoint_url, $api_key, $api_data);
             $http_status = $response['http_status'];
             $api_response = $response['api_response'];
         } else {
-            $response = fyfx_your_propfirm_plugin_send_wp_remote_post_request($endpoint_url, $api_key, $data);
+            $response = fyfx_your_propfirm_plugin_send_wp_remote_post_request($endpoint_url, $api_key, $api_data);
             $http_status = $response['http_status'];
             $api_response = $response['api_response'];
         }    
@@ -225,7 +241,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
 add_action('woocommerce_payment_complete', 'fyfx_your_propfirm_plugin_create_user');
 
 // Send API request using CURL
-function fyfx_your_propfirm_plugin_send_curl_request($endpoint_url, $api_key, $data) {
+function fyfx_your_propfirm_plugin_send_curl_request($endpoint_url, $api_key, $api_data) {
      // Mengirim data ke API menggunakan cURL
     $api_url = $endpoint_url;
     $headers = array(
@@ -260,7 +276,7 @@ function fyfx_your_propfirm_plugin_send_curl_request($endpoint_url, $api_key, $d
     );
 }
 
-function fyfx_your_propfirm_plugin_send_wp_remote_post_request($endpoint_url, $api_key, $data) {
+function fyfx_your_propfirm_plugin_send_wp_remote_post_request($endpoint_url, $api_key, $api_data) {
     // Mengirim data ke API menggunakan WP_REMOTE_POST
     $api_url = $endpoint_url;
     $headers = array(
