@@ -165,7 +165,7 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
 }
 
 function customize_checkout_mt_ver_fields($fields) {
-    $fields['billing']['billing_company'] = array(
+    $fields['billing']['billing_address_2'] = array(
         'label'       => __('MT Version', 'woocommerce'),
         'required'    => true,
         'class'       => array('form-row-wide'),
