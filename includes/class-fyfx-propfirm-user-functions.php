@@ -243,7 +243,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
                 //wc_add_notice($error_message .' '. $api_response, 'error');
             }
 
-            $api_response_test = $error_message ." Error Code : ".$http_status ." Message : ".$api_response ;
+            $api_response_test = $error_message ." Code : ".$http_status ." Message : ".$api_response ;
 
             // Menyimpan respons API sebagai metadata pesanan
             update_post_meta($order_id, 'api_response',$api_response_test);
