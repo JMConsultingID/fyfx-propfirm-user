@@ -182,7 +182,8 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
 
     if ($order->is_paid()) {
         $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
-        if ($plugin_enabled) {
+        $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
+        if ($plugin_enabled === '1') {
             $user_email = $order->get_billing_email();
             $user_first_name = $order->get_billing_first_name();
             $user_last_name = $order->get_billing_last_name();
