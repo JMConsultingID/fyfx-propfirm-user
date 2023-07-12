@@ -183,77 +183,70 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
     if ($order->is_paid()) {
         $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
         $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
-        if ($plugin_enabled === '1') {
-            $user_email = $order->get_billing_email();
-            $user_first_name = $order->get_billing_first_name();
-            $user_last_name = $order->get_billing_last_name();
+        $user_email = $order->get_billing_email();
+        $user_first_name = $order->get_billing_first_name();
+        $user_last_name = $order->get_billing_last_name();
 
-            // Set additional user details
-            $program_id = '649fd5c99c1c3b382bc5ad01';
-            $mt_version = 'MT4';
-            $user_address = $order->get_billing_address_1();
-            $user_city = $order->get_billing_city();
-            $user_zip_code = $order->get_billing_postcode();
-            $user_country = $order->get_billing_country();
-            $user_phone = $order->get_billing_phone();
-
-
-            $api_data = array(
-                'email' => $user_email,
-                'firstname' => $user_first_name,
-                'lastname' => $user_last_name,
-                'programId' => $program_id,
-                'mtVersion' => $mt_version,
-                'addressLine' => $user_address,
-                'city' => $user_city,
-                'zipCode' => $user_zip_code,
-                'country' => $user_country,
-                'phone' => $user_phone
-            );
+        // Set additional user details
+        $program_id = '649fd5c99c1c3b382bc5ad01';
+        $mt_version = 'MT4';
+        $user_address = $order->get_billing_address_1();
+        $user_city = $order->get_billing_city();
+        $user_zip_code = $order->get_billing_postcode();
+        $user_country = $order->get_billing_country();
+        $user_phone = $order->get_billing_phone();
 
 
-            // Send the API request
-            if ($request_method === 'curl') {
-                $response = fyfx_your_propfirm_plugin_send_curl_request($endpoint_url, $api_key, $api_data);
-                $http_status = $response['http_status'];
-                $api_response = $response['api_response'];
-            } else {
-                $response = fyfx_your_propfirm_plugin_send_wp_remote_post_request($endpoint_url, $api_key, $api_data);
-                $http_status = $response['http_status'];
-                $api_response = $response['api_response'];
-            }    
+        $api_data = array(
+            'email' => $user_email,
+            'firstname' => $user_first_name,
+            'lastname' => $user_last_name,
+            'programId' => $program_id,
+            'mtVersion' => $mt_version,
+            'addressLine' => $user_address,
+            'city' => $user_city,
+            'zipCode' => $user_zip_code,
+            'country' => $user_country,
+            'phone' => $user_phone
+        );
 
-            if ($http_status == 201) {
-                // Jika pengguna berhasil dibuat (kode respons: 201)
-                //wc_add_notice('User created successfully.' . $api_response, 'success');
-            } elseif ($http_status == 400) {
-                // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
-                $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user. Error Type A.';
-                //wc_add_notice($error_message .' '. $api_response, 'error');
-            } elseif ($http_status == 409) {
-                // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
-                $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user. Error Type B.';
-                //wc_add_notice($error_message .' '. $api_response, 'error');
-            } elseif ($http_status == 500) {
-                // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
-                $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user. Error Type C.';
-                //wc_add_notice($error_message .' '. $api_response, 'error');
-            } else {
-            	$error_message = isset($api_response['message']) ? $api_response['message'] : 'An error occurred while creating the user. Error Type A.';
-                // Menampilkan pemberitahuan umum jika kode respons tidak dikenali
-                //wc_add_notice($error_message .' '. $api_response, 'error');
-            }
 
-            $api_response_test = $error_message ." Code : ".$http_status ." Message : ".$api_response ;
+        // Send the API request
+        if ($request_method === 'curl') {
+            $response = fyfx_your_propfirm_plugin_send_curl_request($endpoint_url, $api_key, $api_data);
+            $http_status = $response['http_status'];
+            $api_response = $response['api_response'];
+        } else {
+            $response = fyfx_your_propfirm_plugin_send_wp_remote_post_request($endpoint_url, $api_key, $api_data);
+            $http_status = $response['http_status'];
+            $api_response = $response['api_response'];
+        }    
 
-            // Menyimpan respons API sebagai metadata pesanan
-            update_post_meta($order_id, 'api_response',$api_response_test);
-        }
-        else {
-            // Menyimpan respons API sebagai metadata pesanan
-            update_post_meta($order_id, 'api_response','Plugin FYFX is not Active');
+        if ($http_status == 201) {
+            // Jika pengguna berhasil dibuat (kode respons: 201)
+            //wc_add_notice('User created successfully.' . $api_response, 'success');
+        } elseif ($http_status == 400) {
+            // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
+            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user. Error Type A.';
+            //wc_add_notice($error_message .' '. $api_response, 'error');
+        } elseif ($http_status == 409) {
+            // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
+            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user. Error Type B.';
+            //wc_add_notice($error_message .' '. $api_response, 'error');
+        } elseif ($http_status == 500) {
+            // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
+            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user. Error Type C.';
+            //wc_add_notice($error_message .' '. $api_response, 'error');
+        } else {
+        	$error_message = isset($api_response['message']) ? $api_response['message'] : 'An error occurred while creating the user. Error Type A.';
+            // Menampilkan pemberitahuan umum jika kode respons tidak dikenali
+            //wc_add_notice($error_message .' '. $api_response, 'error');
         }
 
+        $api_response_test = $error_message ." Code : ".$http_status ." Message : ".$api_response ;
+
+        // Menyimpan respons API sebagai metadata pesanan
+        update_post_meta($order_id, 'api_response',$api_response_test);
     }
 }
 
