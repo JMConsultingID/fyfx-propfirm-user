@@ -110,6 +110,17 @@ function fyfx_your_propfirm_plugin_settings_fields() {
 }
 add_action('admin_init', 'fyfx_your_propfirm_plugin_settings_fields');
 
+// Render enable plugin field
+function fyfx_your_propfirm_plugin_enabled_callback() {
+    $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
+    ?>
+    <select name="fyfx_your_propfirm_plugin_enabled">
+        <option value="1" <?php selected($plugin_enabled, '1'); ?>>Enabled</option>
+        <option value="0" <?php selected($plugin_enabled, '0'); ?>>Disabled</option>
+    </select>
+    <?php
+}
+
 // Render endpoint URL field
 function fyfx_your_propfirm_plugin_endpoint_url_callback() {
     $endpoint_url = esc_attr(get_option('fyfx_your_propfirm_plugin_endpoint_url'));
