@@ -112,7 +112,7 @@ function fyfx_your_propfirm_plugin_request_method_callback() {
     ?>
     <select name="fyfx_your_propfirm_plugin_request_method">
         <option value="curl" <?php selected($request_method, 'curl'); ?>>CURL</option>
-        <option value="wp_remote_post" <?php selected($request_method, 'wp_remote_post'); ?>>WP_REMOTE_POST</option>
+        <option value="wp_remote_post" <?php selected($request_method, 'wp_remote_post'); ?> selected>WP REMOTE POST</option>
     </select>
     <?php
 }
@@ -142,6 +142,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
 	// Retrieve endpoint URL and API Key from plugin settings
     $endpoint_url = esc_attr(get_option('fyfx_your_propfirm_plugin_endpoint_url'));
     $api_key = esc_attr(get_option('fyfx_your_propfirm_plugin_api_key'));
+    $request_method = get_option('fyfx_your_propfirm_plugin_enable_response_header');
 
     // Check if endpoint URL and API Key are provided
     if (empty($endpoint_url) || empty($api_key)) {
@@ -181,33 +182,19 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             'phone' => $user_phone
         );
 
-        // Mengirim data ke API menggunakan cURL
-        $api_url = $endpoint_url;
-        $headers = array(
-            'Accept: application/json',
-            'Content-Type: application/json',
-            'X-Client-Key: '.$api_key
-        );
 
-        $ch = curl_init($api_url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_ENCODING, "");
-        curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");        
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($api_data));        
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        // Send the API request
+        if ($request_method === 'curl') {
+            $response = fyfx_your_propfirm_plugin_send_curl_request($endpoint_url, $api_key, $data);
+            $http_status = $response['http_status'];
+            $api_response = $response['api_response'];
+        } else {
+            $response = fyfx_your_propfirm_plugin_send_wp_remote_post_request($endpoint_url, $api_key, $data);
+            $http_status = $response['http_status'];
+            $api_response = $response['api_response'];
+        }    
 
-        $response = curl_exec($ch);
-        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Mendapatkan kode stat
-        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE); // Mendapatkan ukuran header
-        curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_close($ch);
-
-        // Menggunakan respons dari API jika diperlukan
-        $api_response = substr($response, $header_size);
+        
 
         if ($http_status == 201) {
             // Jika pengguna berhasil dibuat (kode respons: 201)
@@ -250,6 +237,70 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
 }
 
 add_action('woocommerce_payment_complete', 'fyfx_your_propfirm_plugin_create_user');
+
+// Send API request using CURL
+function fyfx_your_propfirm_plugin_send_curl_request($endpoint_url, $api_key, $data) {
+     // Mengirim data ke API menggunakan cURL
+    $api_url = $endpoint_url;
+    $headers = array(
+        'Accept: application/json',
+        'Content-Type: application/json',
+        'X-Client-Key: '.$api_key
+    );
+
+    $ch = curl_init($api_url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_ENCODING, "");
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");        
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($api_data));        
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $response = curl_exec($ch);
+    $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Mendapatkan kode stat
+    $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE); // Mendapatkan ukuran header
+    curl_setopt($ch, CURLOPT_HEADER, true);
+    curl_close($ch);
+
+    // Menggunakan respons dari API jika diperlukan
+    $api_response = substr($response, $header_size);
+
+    return array(
+        'http_status' => $http_status,
+        'api_response' => $api_response
+    );
+}
+
+function fyfx_your_propfirm_plugin_send_wp_remote_post_request($endpoint_url, $api_key, $data) {
+    // Mengirim data ke API menggunakan WP_REMOTE_POST
+    $api_url = $endpoint_url;
+    $headers = array(
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
+        'X-Client-Key' => $api_key
+    );
+
+    $response = wp_remote_post(
+        $api_url,
+        array(
+            'headers' => $headers,
+            'body' => json_encode($api_data)
+        )
+    );
+
+    $http_status = wp_remote_retrieve_response_code($response);
+    $api_response = wp_remote_retrieve_body($response);
+
+    return array(
+        'http_status' => $http_status,
+        'api_response' => $api_response
+    );
+}
+
+       
 
 // Menampilkan pemberitahuan pada halaman "Thank You"
 function display_order_notices() {
