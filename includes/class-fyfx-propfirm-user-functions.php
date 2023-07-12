@@ -203,10 +203,8 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         $user_first_name = $order->get_billing_first_name();
         $user_last_name = $order->get_billing_last_name();
 
-        // Set additional user details
-        $mt_version = 'MT4';
+        // Set additional user details  
         $user_address = $order->get_billing_address_1();
-
         $user_city = $order->get_billing_city();
         $user_zip_code = $order->get_billing_postcode();
         $user_country = $order->get_billing_country();
@@ -221,20 +219,26 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             break; // Hanya mengambil SKU produk dari item pertama
         }
 
+        $mt_version = $order->get_billing_address_2();
+        if (!empty($mt_version)){
+            $mt_version_value = $mt_version;
+        }
+        else{
+            $mt_version_value = 'MT4';
+        }
 
         $api_data = array(
             'email' => $user_email,
             'firstname' => $user_first_name,
             'lastname' => $user_last_name,
             'programId' => $program_id, // Menggunakan SKU produk sebagai programId            
-            'mtVersion' => $mt_version,
+            'mtVersion' => $mt_version_value,
             'addressLine' => $user_address,
             'city' => $user_city,
             'zipCode' => $user_zip_code,
             'country' => $user_country,
             'phone' => $user_phone
         );
-
 
         // Send the API request
         if ($request_method === 'curl') {
