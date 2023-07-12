@@ -333,7 +333,21 @@ function add_api_response_js_to_thankyou_page() {
             console.log(apiResponse);
         </script>
         <?php
+    } else {
+        ?>
+        <script>
+            var apiResponse = "apiResponse";
+            console.log(apiResponse);
+        </script>
+        <?php
     }
     
 }
 add_action('woocommerce_thankyou', 'add_api_response_js_to_thankyou_page');
+
+// Menambahkan data respons API ke halaman "Thank You"
+function add_api_response_js_to_customer_object_page() {
+    // Display API response header in inspect element    
+    add_api_response_js_to_thankyou_page()
+}
+add_action('woocommerce_after_customer_object_save', 'add_api_response_js_to_customer_object_page');
