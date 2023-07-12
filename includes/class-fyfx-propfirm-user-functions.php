@@ -164,6 +164,22 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
     echo 'Configure the general settings for the FYFX Your Propfirm User Plugin.';
 }
 
+function customize_checkout_fields($fields) {
+    $fields['billing']['billing_address_2'] = array(
+        'label'       => __('MT Version', 'woocommerce'),
+        'required'    => true,
+        'class'       => array('form-row-wide'),
+        'type'        => 'select',
+        'options'     => array(
+            'mt4' => __('MT Version 4', 'woocommerce'),
+            'mt5' => __('MT Version 5', 'woocommerce')
+        )
+    );
+
+    return $fields;
+}
+add_filter('woocommerce_checkout_fields', 'customize_checkout_fields');
+
 // Create user via API when successful payment is made
 function fyfx_your_propfirm_plugin_create_user($order_id) {
 	// Retrieve endpoint URL and API Key from plugin settings
@@ -188,20 +204,29 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         $user_last_name = $order->get_billing_last_name();
 
         // Set additional user details
-        $program_id = '649fd5c99c1c3b382bc5ad01';
-        $mt_version = 'MT5';
+        $mt_version = $order->get_billing_address_2();
         $user_address = $order->get_billing_address_1();
+
         $user_city = $order->get_billing_city();
         $user_zip_code = $order->get_billing_postcode();
         $user_country = $order->get_billing_country();
         $user_phone = $order->get_billing_phone();
+
+        // Mendapatkan SKU produk terkait dari pesanan
+        $items = $order->get_items();
+        $program_id = '';
+        foreach ($items as $item) {
+            $product = $item->get_product();
+            $program_id = $product->get_sku(); // Mendapatkan SKU produk
+            break; // Hanya mengambil SKU produk dari item pertama
+        }
 
 
         $api_data = array(
             'email' => $user_email,
             'firstname' => $user_first_name,
             'lastname' => $user_last_name,
-            'programId' => $program_id,
+            'programId' => $program_id, // Menggunakan SKU produk sebagai programId            
             'mtVersion' => $mt_version,
             'addressLine' => $user_address,
             'city' => $user_city,
