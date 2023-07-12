@@ -194,45 +194,31 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             $api_response = $response['api_response'];
         }    
 
-        
-
         if ($http_status == 201) {
             // Jika pengguna berhasil dibuat (kode respons: 201)
-            wc_add_notice('User created successfully.' . $api_response, 'success');
+            //wc_add_notice('User created successfully.' . $api_response, 'success');
         } elseif ($http_status == 400) {
             // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
-            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user A.';
-            wc_add_notice($error_message .' '. $api_response, 'error');
+            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user. Error Type A.';
+            //wc_add_notice($error_message .' '. $api_response, 'error');
         } elseif ($http_status == 409) {
             // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
-            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user B.';
-            wc_add_notice($error_message .' '. $api_response, 'error');
+            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user. Error Type B.';
+            //wc_add_notice($error_message .' '. $api_response, 'error');
         } elseif ($http_status == 500) {
             // Jika terjadi kesalahan saat membuat pengguna (kode respons: 400)
-            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user C.';
-            wc_add_notice($error_message .' '. $api_response, 'error');
+            $error_message = isset($api_response['error']) ? $api_response['errors'] : 'An error occurred while creating the user. Error Type C.';
+            //wc_add_notice($error_message .' '. $api_response, 'error');
         } else {
-        	$error_message = isset($api_response['message']) ? $api_response['message'] : 'An error occurred while creating the user D.';
+        	$error_message = isset($api_response['message']) ? $api_response['message'] : 'An error occurred while creating the user. Error Type A.';
             // Menampilkan pemberitahuan umum jika kode respons tidak dikenali
-            wc_add_notice($error_message .' '. $api_response, 'error');
+            //wc_add_notice($error_message .' '. $api_response, 'error');
         }
 
         $api_response_test = $error_message ." Error Code : ".$http_status ." Message : ".$api_response ;
 
         // Menyimpan respons API sebagai metadata pesanan
         update_post_meta($order_id, 'api_response',$api_response_test);
-
-        // Menambahkan header Access-Control-Expose-Headers untuk mengizinkan akses ke header respons
-        header('Access-Control-Expose-Headers: X-Response');
-        // Menampilkan respons API dalam header X-Response
-        header('X-Response: ' . $api_response);
-        // Menampilkan respons API pada "console log" menggunakan JavaScript pada halaman "Thank You"
-        if (is_order_received_page()) {
-            $script = '<script>console.log(\'' . addslashes($http_status) . '\');</script>';
-            echo $script;
-        }
-        // Menambahkan informasi respons API ke payload response pada halaman "Thank You"
-        add_filter('woocommerce_payment_successful_response', 'add_api_response_to_thankyou_page');
     }
 }
 
@@ -298,33 +284,13 @@ function fyfx_your_propfirm_plugin_send_wp_remote_post_request($endpoint_url, $a
         'http_status' => $http_status,
         'api_response' => $api_response
     );
-}
-
-       
+}   
 
 // Menampilkan pemberitahuan pada halaman "Thank You"
 function display_order_notices() {
     wc_print_notices();
 }
 add_action('woocommerce_thankyou', 'display_order_notices');
-
-// Fungsi untuk menambahkan informasi respons API ke payload response pada halaman "Thank You"
-function add_api_response_to_thankyou_page($response) {
-    $api_response = get_api_response(); // Mendapatkan respons API dari header X-Response
-    if (!empty($api_response)) {
-        $response['api_response'] = $api_response;
-    }
-    return $response;
-}
-
-// Fungsi untuk mendapatkan respons API dari header X-Response
-function get_api_response() {
-    $headers = getallheaders();
-    if (isset($headers['X-Response'])) {
-        return $headers['X-Response'];
-    }
-    return '';
-}
 
 // Menambahkan data respons API ke halaman "Thank You"
 function add_api_response_js_to_thankyou_page() {
