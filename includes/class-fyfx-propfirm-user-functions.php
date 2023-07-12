@@ -164,9 +164,9 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
     echo 'Configure the general settings for the FYFX Your Propfirm User Plugin.';
 }
 
-function customize_checkout_fields($fields) {
+function customize_checkout_mt_ver_fields($fields) {
     $fields['billing']['billing_address_2'] = array(
-        'label'       => '',
+        'label'       => __('MT Version', 'woocommerce'),
         'required'    => true,
         'class'       => array('form-row-wide'),
         'type'        => 'select',
@@ -178,7 +178,7 @@ function customize_checkout_fields($fields) {
 
     return $fields;
 }
-add_filter('woocommerce_checkout_fields', 'customize_checkout_fields');
+add_filter('woocommerce_checkout_fields', 'customize_checkout_mt_ver_fields');
 
 // Create user via API when successful payment is made
 function fyfx_your_propfirm_plugin_create_user($order_id) {
@@ -204,7 +204,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         $user_last_name = $order->get_billing_last_name();
 
         // Set additional user details
-        $mt_version = $order->get_billing_address_2();
+        $mt_version = 'MT4';
         $user_address = $order->get_billing_address_1();
 
         $user_city = $order->get_billing_city();
