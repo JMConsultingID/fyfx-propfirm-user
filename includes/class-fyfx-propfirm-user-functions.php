@@ -342,6 +342,12 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         return;
     }
 
+    $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
+    if ($plugin_enabled !== 'enable') {
+        return;
+    }
+
+
     // Get the order object
     $order = wc_get_order($order_id);   
 
