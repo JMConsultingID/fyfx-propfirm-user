@@ -180,27 +180,7 @@ function add_custom_checkout_field($fields) {
 
     return $fields;
 }
-add_filter('woocommerce_checkout_fields', 'add_custom_checkout_field');
-
-// Pastikan script ini ditempatkan dalam file functions.php tema aktif Anda di WordPress
-
-// Fungsi untuk menambahkan custom field ke dalam formulir pengiriman
-function add_custom_shipping_field($fields) {
-    $fields['shipping']['custom_field'] = array(
-        'type' => 'select',
-        'label' => __('MT Version', 'woocommerce'),
-        'required' => true,
-        'class' => array('form-row-wide'),
-        'options' => array(
-            '' => __('Pilih MT Version', 'woocommerce'),
-            'MT4' => __('MT Version 4', 'woocommerce'),
-            'MT5' => __('MT Version 5', 'woocommerce')
-        )
-    );
-
-    return $fields;
-}
-add_filter('woocommerce_review_order_before_order_total', 'add_custom_shipping_field', 9999);
+add_filter('woocommerce_review_order_before_order_total', 'add_custom_checkout_field');
 
 // Create user via API when successful payment is made
 function fyfx_your_propfirm_plugin_create_user($order_id) {
