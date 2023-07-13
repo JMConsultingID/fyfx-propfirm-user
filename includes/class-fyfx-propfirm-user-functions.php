@@ -213,8 +213,8 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
 // Pastikan script ini ditempatkan dalam file functions.php tema aktif Anda di WordPress
 
 // Add custom field to checkout page
-function woocommerce_create_user_plugin_add_custom_field($fields) {
-    $checkout_form = get_option('woocommerce_create_user_plugin_checkout_form');
+function fyfx_your_propfirm_plugin_add_custom_field($fields) {
+    $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
 
     if ($checkout_form === 'woocommerce_standard') {
         $fields['billing']['mt_version'] = array(
@@ -232,11 +232,11 @@ function woocommerce_create_user_plugin_add_custom_field($fields) {
 
     return $fields;
 }
-add_filter('woocommerce_checkout_fields', 'woocommerce_create_user_plugin_add_custom_field');
+add_filter('woocommerce_checkout_fields', 'fyfx_your_propfirm_plugin_add_custom_field');
 
 // Fungsi untuk menampilkan select option MT Version setelah hook woocommerce_before_checkout_shipping_form
 function display_custom_field_after_shipping_form() {
-    $checkout_form = get_option('woocommerce_create_user_plugin_checkout_form');
+    $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
 
     if ($checkout_form !== 'woocommerce_standard') {
         ?>
