@@ -248,7 +248,7 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
 // Add custom field to checkout page
 function fyfx_your_propfirm_plugin_add_custom_field($fields) {
     $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
-    if ($plugin_enabled == 'enable') {
+    if ($plugin_enabled !== 'enable') {
         return $fields;
     }
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
