@@ -172,6 +172,7 @@ function fyfx_your_propfirm_plugin_checkout_form_callback() {
     <select name="fyfx_your_propfirm_plugin_checkout_form">
         <option value="woocommerce_form" <?php selected($checkout_form, 'woocommerce_form'); ?>>WooCommerce Checkout Form</option>
         <option value="sellkit_form" <?php selected($checkout_form, 'sellkit_form'); ?>>SellKit Checkout Form</option>
+        <option value="" <?php selected($checkout_form, 'sellkit_form'); ?>>Disable</option>
     </select>
     <?php
 }
