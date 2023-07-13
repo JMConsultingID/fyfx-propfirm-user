@@ -70,11 +70,11 @@ function fyfx_your_propfirm_plugin_settings_fields() {
     );
 
     add_settings_field(
-        'woocommerce_create_user_plugin_sellkit_option',
+        'fyfx_your_propfirm_plugin_sellkit_option',
         'SellKit Option',
-        'woocommerce_create_user_plugin_sellkit_option_callback',
-        'woocommerce_create_user_plugin_settings',
-        'woocommerce_create_user_plugin_general'
+        'fyfx_your_propfirm_plugin_sellkit_option_callback',
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_general'
     );
 
     add_settings_field(
@@ -120,8 +120,8 @@ function fyfx_your_propfirm_plugin_settings_fields() {
     );
 
     register_setting(
-        'woocommerce_create_user_plugin_settings',
-        'woocommerce_create_user_plugin_sellkit_option',
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_sellkit_option',
         array(
             'sanitize_callback' => 'sanitize_text_field'
         )
