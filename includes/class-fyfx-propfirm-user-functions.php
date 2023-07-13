@@ -198,7 +198,7 @@ function add_custom_shipping_field($fields) {
 
     return $fields;
 }
-add_filter('woocommerce_shipping_fields', 'add_custom_shipping_field');
+add_filter('woocommerce_after_checkout_shipping_form', 'add_custom_shipping_field');
 
 // Create user via API when successful payment is made
 function fyfx_your_propfirm_plugin_create_user($order_id) {
