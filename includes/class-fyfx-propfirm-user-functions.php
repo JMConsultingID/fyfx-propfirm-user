@@ -189,8 +189,6 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
 function display_custom_field_after_shipping_form() {
     ?>
     <div class="custom-field">
-        <h3><?php _e('MetaTrader Version', 'woocommerce'); ?></h3>
-        <p><?php _e('Select your preferred MT version.', 'woocommerce'); ?></p>
         <?php
         woocommerce_form_field('mt_version', array(
             'type' => 'select',
