@@ -182,6 +182,24 @@ function add_custom_checkout_field($fields) {
 }
 add_filter('woocommerce_checkout_fields', 'add_custom_checkout_field');
 
+// Fungsi untuk menambahkan bidang kustom ke dalam bidang pengiriman checkout
+function add_custom_shipping_field($fields) {
+    $fields['shipping']['mt_version'] = array(
+        'type' => 'select',
+        'label' => __('MT Version', 'woocommerce'),
+        'required' => true,
+        'class' => array('form-row-wide'),
+        'options' => array(
+            '' => __('Pilih MT Version', 'woocommerce'),
+            'MT4' => __('MT Version 4', 'woocommerce'),
+            'MT5' => __('MT Version 5', 'woocommerce')
+        )
+    );
+
+    return $fields;
+}
+add_filter('sellkit_checkout_shipping_fields', 'add_custom_shipping_field');
+
 // Create user via API when successful payment is made
 function fyfx_your_propfirm_plugin_create_user($order_id) {
 	// Retrieve endpoint URL and API Key from plugin settings
