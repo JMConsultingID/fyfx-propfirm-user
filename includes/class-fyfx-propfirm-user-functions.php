@@ -180,7 +180,7 @@ function add_custom_checkout_field($fields) {
 
     return $fields;
 }
-add_filter('woocommerce_review_order_before_order_total', 'add_custom_checkout_field');
+add_filter('sellkit_checkout_billing_fields', 'add_custom_checkout_field');
 
 // Create user via API when successful payment is made
 function fyfx_your_propfirm_plugin_create_user($order_id) {
