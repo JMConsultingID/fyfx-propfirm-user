@@ -247,8 +247,8 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
 // Add custom field to checkout page
 function fyfx_your_propfirm_plugin_add_custom_field($fields) {
     $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
-    if ($plugin_enabled !== 'enable') {
-        return;
+    if ($plugin_enabled == 'enable') {
+        return $fields;
     }
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
 
@@ -274,7 +274,7 @@ add_filter('woocommerce_checkout_fields', 'fyfx_your_propfirm_plugin_add_custom_
 function display_custom_field_after_shipping_form() {
     $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
     if ($plugin_enabled !== 'enable') {
-        return;
+        return $fields;
     }
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     $sellkit_option = get_option('fyfx_your_propfirm_plugin_sellkit_option');
@@ -303,7 +303,7 @@ add_action('woocommerce_after_checkout_shipping_form', 'display_custom_field_aft
 function display_custom_field_after_billing_form() {
     $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
     if ($plugin_enabled !== 'enable') {
-        return;
+        return $fields;
     }
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     $sellkit_option = get_option('fyfx_your_propfirm_plugin_sellkit_option');
