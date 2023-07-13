@@ -200,26 +200,7 @@ function add_custom_shipping_field($fields) {
 
     return $fields;
 }
-add_filter('sellkit_checkout_shipping_fields', 'add_custom_shipping_field', 9999);
-
-// Fungsi untuk menambahkan custom field ke dalam formulir pengiriman
-function add_custom_billings_field($fields) {
-    $fields['shipping']['custom_fieldss'] = array(
-        'type' => 'select',
-        'label' => __('MT Versions', 'woocommerce'),
-        'required' => true,
-        'class' => array('form-row-wide'),
-        'options' => array(
-            '' => __('Pilih MT Version', 'woocommerce'),
-            'MT4' => __('MT Version 4', 'woocommerce'),
-            'MT5' => __('MT Version 5', 'woocommerce')
-        )
-    );
-
-    return $fields;
-}
-add_filter('sellkit_checkout_billing_fields', 'add_custom_shipping_field', 9999);
-
+add_filter('woocommerce_review_order_before_order_total', 'add_custom_shipping_field', 9999);
 
 // Create user via API when successful payment is made
 function fyfx_your_propfirm_plugin_create_user($order_id) {
