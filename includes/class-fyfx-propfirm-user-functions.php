@@ -115,7 +115,8 @@ function fyfx_your_propfirm_plugin_settings_fields() {
         'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_checkout_form',
         array(
-            'sanitize_callback' => 'sanitize_text_field'
+            'sanitize_callback' => 'sanitize_text_field',
+            'default' => 'woocommerce_form'
         )
     );
 
@@ -123,7 +124,8 @@ function fyfx_your_propfirm_plugin_settings_fields() {
         'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_sellkit_option',
         array(
-            'sanitize_callback' => 'sanitize_text_field'
+            'sanitize_callback' => 'sanitize_text_field',
+            'default' => 'sellkit_billing'
         )
     );
 
@@ -131,7 +133,8 @@ function fyfx_your_propfirm_plugin_settings_fields() {
         'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_request_method',
         array(
-            'sanitize_callback' => 'sanitize_text_field'
+            'sanitize_callback' => 'sanitize_text_field',
+            'default' => 'wp_remote_post'
         )
     );
 
