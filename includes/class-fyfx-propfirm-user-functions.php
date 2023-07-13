@@ -247,7 +247,7 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
 // Add custom field to checkout page
 function fyfx_your_propfirm_plugin_add_custom_field($fields) {
     $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
-    if ($plugin_enabled !== '1') {
+    if ($plugin_enabled != 1) {
         return;
     }
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
@@ -273,7 +273,7 @@ add_filter('woocommerce_checkout_fields', 'fyfx_your_propfirm_plugin_add_custom_
 // Fungsi untuk menampilkan select option MT Version setelah hook woocommerce_before_checkout_shipping_form
 function display_custom_field_after_shipping_form() {
     $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
-    if ($plugin_enabled !== '1') {
+    if ($plugin_enabled != 1) {
         return;
     }
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
@@ -302,7 +302,7 @@ add_action('woocommerce_after_checkout_shipping_form', 'display_custom_field_aft
 // Fungsi untuk menampilkan select option MT Version setelah hook woocommerce_before_checkout_billing_form
 function display_custom_field_after_billing_form() {
     $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
-    if ($plugin_enabled !== '1') {
+    if ($plugin_enabled != 1) {
         return;
     }
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
