@@ -219,10 +219,10 @@ function fyfx_your_propfirm_plugin_add_custom_field($fields) {
     if ($checkout_form === 'woocommerce_standard') {
         $fields['billing']['mt_version'] = array(
             'type' => 'select',
-            'label' => 'MT Version',
+            'label' => 'MetaTrader Version',
             'options' => array(
-                'mt4' => 'MT-4',
-                'mt5' => 'MT-5'
+                'MT4' => 'MetaTrader Version 4',
+                'MT5' => 'MetaTrader Version 5'
             ),
             'required' => true,
             'class' => array('form-row-wide'),
@@ -248,7 +248,6 @@ function display_custom_field_after_shipping_form() {
                 'label' => __('MetaTrader Version', 'woocommerce'),
                 'required' => true,
                 'options' => array(
-                    '' => __('Select MT Version', 'woocommerce'),
                     'MT4' => __('MetaTrader Version 4', 'woocommerce'),
                     'MT5' => __('MetaTrader Version 5', 'woocommerce')
                 )
