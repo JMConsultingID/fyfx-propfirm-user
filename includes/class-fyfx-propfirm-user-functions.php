@@ -172,7 +172,6 @@ function fyfx_your_propfirm_plugin_checkout_form_callback() {
     <select name="fyfx_your_propfirm_plugin_checkout_form">
         <option value="woocommerce_form" <?php selected($checkout_form, 'woocommerce_form'); ?>>WooCommerce Checkout Form</option>
         <option value="sellkit_form" <?php selected($checkout_form, 'sellkit_form'); ?>>SellKit Checkout Form</option>
-        <option value="" <?php selected($checkout_form, ''); ?>>Disable</option>
     </select>
     <?php
 }
@@ -248,7 +247,7 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
 // Add custom field to checkout page
 function fyfx_your_propfirm_plugin_add_custom_field($fields) {
     $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
-    if ($plugin_enabled !== 'enable') {
+    if ($plugin_enabled == 'enable') {
         return $fields;
     }
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
@@ -374,7 +373,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             break; // Hanya mengambil SKU produk dari item pertama
         }
 
-        $mt_version = $order->mt_version();
+        $mt_version = wc_get_value_from_input('mt_version');
         if (!empty($mt_version)){
             $mt_version_value = $mt_version;
         }
