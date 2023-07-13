@@ -201,7 +201,7 @@ function display_custom_field_after_shipping_form() {
     </div>
     <?php
 }
-add_action('woocommerce_before_checkout_shipping_form', 'display_custom_field_after_shipping_form');
+add_action('sellkit_checkout_shipping_fields', 'display_custom_field_after_shipping_form');
 
 
 // Create user via API when successful payment is made
