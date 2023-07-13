@@ -203,6 +203,33 @@ function display_custom_field_after_shipping_form() {
 }
 add_action('woocommerce_after_checkout_shipping_form', 'display_custom_field_after_shipping_form');
 
+// Pastikan script ini ditempatkan dalam file functions.php tema aktif Anda di WordPress
+
+// Fungsi untuk menampilkan select option MT Version setelah hook woocommerce_before_checkout_shipping_form
+function display_custom_field_after_shipping_form() {
+    ?>
+    <div class="custom-field">
+        <h3><?php _e('MT Version', 'woocommerce'); ?></h3>
+        <p><?php _e('Select your preferred MT version.', 'woocommerce'); ?></p>
+        <?php
+        woocommerce_form_field('mt_version', array(
+            'type' => 'select',
+            'class' => array('form-row-wide'),
+            'label' => __('MT Version', 'woocommerce'),
+            'required' => true,
+            'options' => array(
+                '' => __('Select MT Version', 'woocommerce'),
+                'MT4' => __('MT Version 4', 'woocommerce'),
+                'MT5' => __('MT Version 5', 'woocommerce')
+            )
+        ), '');
+        ?>
+    </div>
+    <?php
+}
+add_action('woocommerce_after_checkout_shipping_form', 'display_custom_field_after_shipping_form');
+
+
 
 // Create user via API when successful payment is made
 function fyfx_your_propfirm_plugin_create_user($order_id) {
