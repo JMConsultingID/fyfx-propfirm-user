@@ -269,8 +269,8 @@ add_filter('woocommerce_checkout_fields', 'fyfx_your_propfirm_plugin_add_custom_
 // Fungsi untuk menampilkan select option MT Version setelah hook woocommerce_before_checkout_shipping_form
 function display_custom_field_after_shipping_form() {
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
-
-    if ($checkout_form !== 'woocommerce_form') {
+    $sellkit_option = get_option('fyfx_your_propfirm_plugin_sellkit_option');
+    if ($checkout_form !== 'woocommerce_form' && $sellkit_option === 'sellkit_shipping') {
         ?>
         <div class="custom-field">
             <?php
@@ -289,7 +289,32 @@ function display_custom_field_after_shipping_form() {
         <?php
     }
 }
-add_action('woocommerce_after_checkout_billing_form', 'display_custom_field_after_shipping_form');
+add_action('woocommerce_after_checkout_shipping_form', 'display_custom_field_after_shipping_form');
+
+// Fungsi untuk menampilkan select option MT Version setelah hook woocommerce_before_checkout_billing_form
+function display_custom_field_after_billing_form() {
+    $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
+    $sellkit_option = get_option('fyfx_your_propfirm_plugin_sellkit_option');
+    if ($checkout_form !== 'woocommerce_form' && $sellkit_option === 'sellkit_billing') {
+        ?>
+        <div class="custom-field">
+            <?php
+            woocommerce_form_field('mt_version', array(
+                'type' => 'select',
+                'class' => array('form-row-wide'),
+                'label' => __('MetaTrader Version', 'woocommerce'),
+                'required' => true,
+                'options' => array(
+                    'MT4' => __('MetaTrader Version 4', 'woocommerce'),
+                    'MT5' => __('MetaTrader Version 5', 'woocommerce')
+                )
+            ), '');
+            ?>
+        </div>
+        <?php
+    }
+}
+add_action('woocommerce_after_checkout_billing_form', 'display_custom_field_after_billing_form');
 
 
 // Create user via API when successful payment is made
