@@ -374,7 +374,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             break; // Hanya mengambil SKU produk dari item pertama
         }
 
-        $mt_version = $order->get_billing_address_2();
+        $mt_version = $order->mt_version();
         if (!empty($mt_version)){
             $mt_version_value = $mt_version;
         }
