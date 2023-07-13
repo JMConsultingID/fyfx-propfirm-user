@@ -200,7 +200,7 @@ function add_custom_shipping_field($fields) {
 
     return $fields;
 }
-add_filter('woocommerce_before_checkout_shipping_form', 'add_custom_shipping_field', 9999);
+add_filter('sellkit_checkout_shipping_fields', 'add_custom_shipping_field', 9999);
 
 
 // Create user via API when successful payment is made
