@@ -212,28 +212,53 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
 
 // Pastikan script ini ditempatkan dalam file functions.php tema aktif Anda di WordPress
 
+// Add custom field to checkout page
+function woocommerce_create_user_plugin_add_custom_field($fields) {
+    $checkout_form = get_option('woocommerce_create_user_plugin_checkout_form');
+
+    if ($checkout_form === 'woocommerce_standard') {
+        $fields['billing']['mt_version'] = array(
+            'type' => 'select',
+            'label' => 'MT Version',
+            'options' => array(
+                'mt4' => 'MT-4',
+                'mt5' => 'MT-5'
+            ),
+            'required' => true,
+            'class' => array('form-row-wide'),
+            'clear' => true
+        );
+    }
+
+    return $fields;
+}
+add_filter('woocommerce_checkout_fields', 'woocommerce_create_user_plugin_add_custom_field');
+
 // Fungsi untuk menampilkan select option MT Version setelah hook woocommerce_before_checkout_shipping_form
 function display_custom_field_after_shipping_form() {
-    ?>
-    <div class="custom-field">
-        <?php
-        woocommerce_form_field('mt_version', array(
-            'type' => 'select',
-            'class' => array('form-row-wide'),
-            'label' => __('MetaTrader Version', 'woocommerce'),
-            'required' => true,
-            'options' => array(
-                '' => __('Select MT Version', 'woocommerce'),
-                'MT4' => __('MetaTrader Version 4', 'woocommerce'),
-                'MT5' => __('MetaTrader Version 5', 'woocommerce')
-            )
-        ), '');
+    $checkout_form = get_option('woocommerce_create_user_plugin_checkout_form');
+
+    if ($checkout_form !== 'woocommerce_standard') {
         ?>
-    </div>
-    <?php
+        <div class="custom-field">
+            <?php
+            woocommerce_form_field('mt_version', array(
+                'type' => 'select',
+                'class' => array('form-row-wide'),
+                'label' => __('MetaTrader Version', 'woocommerce'),
+                'required' => true,
+                'options' => array(
+                    '' => __('Select MT Version', 'woocommerce'),
+                    'MT4' => __('MetaTrader Version 4', 'woocommerce'),
+                    'MT5' => __('MetaTrader Version 5', 'woocommerce')
+                )
+            ), '');
+            ?>
+        </div>
+        <?php
+    }
 }
 add_action('woocommerce_after_checkout_shipping_form', 'display_custom_field_after_shipping_form');
-
 
 
 // Create user via API when successful payment is made
