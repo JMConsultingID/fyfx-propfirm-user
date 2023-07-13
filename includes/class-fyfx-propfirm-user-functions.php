@@ -165,43 +165,23 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
 }
 
 // Fungsi untuk menambahkan bidang kustom ke dalam formulir checkout
-function add_custom_checkout_field($fields) {
-    $fields['billing']['mt_version'] = array(
-        'type' => 'select',
-        'label' => __('MT Version', 'woocommerce'),
-        'required' => true,
-        'class' => array('form-row-wide'),
-        'options' => array(
-            '' => __('Pilih MT Version', 'woocommerce'),
-            'MT4' => __('MT Version 4', 'woocommerce'),
-            'MT5' => __('MT Version 5', 'woocommerce')
-        )
-    );
+// function add_custom_checkout_field($fields) {
+//     $fields['billing']['mt_version'] = array(
+//         'type' => 'select',
+//         'label' => __('MT Version', 'woocommerce'),
+//         'required' => true,
+//         'class' => array('form-row-wide'),
+//         'options' => array(
+//             '' => __('Pilih MT Version', 'woocommerce'),
+//             'MT4' => __('MT Version 4', 'woocommerce'),
+//             'MT5' => __('MT Version 5', 'woocommerce')
+//         )
+//     );
 
-    return $fields;
-}
-add_filter('sellkit_checkout_billing_fields', 'add_custom_checkout_field');
+//     return $fields;
+// }
+// add_filter('sellkit_checkout_billing_fields', 'add_custom_checkout_field');
 
-// Pastikan script ini ditempatkan dalam file functions.php tema aktif Anda di WordPress
-
-// Fungsi untuk menampilkan bidang kustom setelah hook woocommerce_before_checkout_shipping_form
-function display_custom_field_after_shipping_form() {
-    ?>
-    <div class="custom-field">
-        <h3><?php _e('Custom Field', 'woocommerce'); ?></h3>
-        <p><?php _e('This is a custom field description.', 'woocommerce'); ?></p>
-        <?php
-        woocommerce_form_field('custom_field', array(
-            'type' => 'text',
-            'class' => array('form-row-wide'),
-            'label' => __('Custom Field', 'woocommerce'),
-            'required' => true,
-        ), '');
-        ?>
-    </div>
-    <?php
-}
-add_action('woocommerce_after_checkout_shipping_form', 'display_custom_field_after_shipping_form');
 
 // Pastikan script ini ditempatkan dalam file functions.php tema aktif Anda di WordPress
 
