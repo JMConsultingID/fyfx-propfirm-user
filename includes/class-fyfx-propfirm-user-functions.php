@@ -189,18 +189,18 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
 function display_custom_field_after_shipping_form() {
     ?>
     <div class="custom-field">
-        <h3><?php _e('MT Version', 'woocommerce'); ?></h3>
+        <h3><?php _e('MetaTrader Version', 'woocommerce'); ?></h3>
         <p><?php _e('Select your preferred MT version.', 'woocommerce'); ?></p>
         <?php
         woocommerce_form_field('mt_version', array(
             'type' => 'select',
             'class' => array('form-row-wide'),
-            'label' => __('MT Version', 'woocommerce'),
+            'label' => __('MetaTrader Version', 'woocommerce'),
             'required' => true,
             'options' => array(
                 '' => __('Select MT Version', 'woocommerce'),
-                'MT4' => __('MT Version 4', 'woocommerce'),
-                'MT5' => __('MT Version 5', 'woocommerce')
+                'MT4' => __('MetaTrader Version 4', 'woocommerce'),
+                'MT5' => __('MetaTrader Version 5', 'woocommerce')
             )
         ), '');
         ?>
