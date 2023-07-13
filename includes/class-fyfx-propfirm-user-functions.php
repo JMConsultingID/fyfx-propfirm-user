@@ -154,7 +154,7 @@ function fyfx_your_propfirm_plugin_checkout_form_callback() {
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     ?>
     <select name="fyfx_your_propfirm_plugin_checkout_form">
-        <option value="woocommerce_standard" <?php selected($checkout_form, 'woocommerce_form'); ?>>WooCommerce Checkout Form</option>
+        <option value="woocommerce_form" <?php selected($checkout_form, 'woocommerce_form'); ?>>WooCommerce Checkout Form</option>
         <option value="sellkit_form" <?php selected($checkout_form, 'sellkit_checkout'); ?>>SellKit Checkout Form</option>
     </select>
     <?php
@@ -216,7 +216,7 @@ function fyfx_your_propfirm_plugin_general_section_callback() {
 function fyfx_your_propfirm_plugin_add_custom_field($fields) {
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
 
-    if ($checkout_form === 'woocommerce_standard') {
+    if ($checkout_form === 'woocommerce_form') {
         $fields['billing']['mt_version'] = array(
             'type' => 'select',
             'label' => 'MetaTrader Version',
@@ -238,7 +238,7 @@ add_filter('woocommerce_checkout_fields', 'fyfx_your_propfirm_plugin_add_custom_
 function display_custom_field_after_shipping_form() {
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
 
-    if ($checkout_form !== 'woocommerce_standard') {
+    if ($checkout_form !== 'woocommerce_form') {
         ?>
         <div class="custom-field">
             <?php
@@ -257,7 +257,7 @@ function display_custom_field_after_shipping_form() {
         <?php
     }
 }
-add_action('woocommerce_after_checkout_shipping_form', 'display_custom_field_after_shipping_form');
+add_action('woocommerce_after_checkout_billing_form', 'display_custom_field_after_shipping_form');
 
 
 // Create user via API when successful payment is made
