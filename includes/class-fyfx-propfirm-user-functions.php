@@ -62,6 +62,14 @@ function fyfx_your_propfirm_plugin_settings_fields() {
     );
 
     add_settings_field(
+        'fyfx_your_propfirm_plugin_checkout_form',
+        'Checkout Form',
+        'fyfx_your_propfirm_plugin_checkout_form_callback',
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_general'
+    );
+
+    add_settings_field(
         'fyfx_your_propfirm_plugin_request_method',
         'Request Method',
         'fyfx_your_propfirm_plugin_request_method_callback',
@@ -93,6 +101,14 @@ function fyfx_your_propfirm_plugin_settings_fields() {
     register_setting(
         'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_api_key'
+    );
+
+    register_setting(
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_checkout_form',
+        array(
+            'sanitize_callback' => 'sanitize_text_field'
+        )
     );
 
     register_setting(
@@ -131,6 +147,17 @@ function fyfx_your_propfirm_plugin_endpoint_url_callback() {
 function fyfx_your_propfirm_plugin_api_key_callback() {
     $api_key = esc_attr(get_option('fyfx_your_propfirm_plugin_api_key'));
     echo '<input type="text" name="fyfx_your_propfirm_plugin_api_key" value="' . $api_key . '" style="width: 400px;" />';
+}
+
+// Render checkout form field
+function fyfx_your_propfirm_plugin_checkout_form_callback() {
+    $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
+    ?>
+    <select name="fyfx_your_propfirm_plugin_checkout_form">
+        <option value="woocommerce_standard" <?php selected($checkout_form, 'woocommerce_standard'); ?>>WooCommerce Standard Form</option>
+        <option value="sellkit_checkout" <?php selected($checkout_form, 'sellkit_checkout'); ?>>Sellkit Checkout Form</option>
+    </select>
+    <?php
 }
 
 // Render request method field
@@ -218,6 +245,11 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
 
     // Check if endpoint URL and API Key are provided
     if (empty($endpoint_url) || empty($api_key)) {
+        return;
+    }
+
+    $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
+    if ($plugin_enabled !== '1') {
         return;
     }
 
