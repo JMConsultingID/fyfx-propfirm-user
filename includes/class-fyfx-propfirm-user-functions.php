@@ -70,14 +70,6 @@ function fyfx_your_propfirm_plugin_settings_fields() {
     );
 
     add_settings_field(
-        'fyfx_your_propfirm_plugin_sellkit_option',
-        'SellKit Option',
-        'fyfx_your_propfirm_plugin_sellkit_option_callback',
-        'fyfx_your_propfirm_plugin_settings',
-        'fyfx_your_propfirm_plugin_general'
-    );
-
-    add_settings_field(
         'fyfx_your_propfirm_plugin_request_method',
         'Request Method',
         'fyfx_your_propfirm_plugin_request_method_callback',
@@ -114,14 +106,6 @@ function fyfx_your_propfirm_plugin_settings_fields() {
     register_setting(
         'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_checkout_form',
-        array(
-            'sanitize_callback' => 'sanitize_text_field'
-        )
-    );
-
-    register_setting(
-        'fyfx_your_propfirm_plugin_settings',
-        'fyfx_your_propfirm_plugin_sellkit_option',
         array(
             'sanitize_callback' => 'sanitize_text_field'
         )
@@ -174,22 +158,6 @@ function fyfx_your_propfirm_plugin_checkout_form_callback() {
         <option value="sellkit_form" <?php selected($checkout_form, 'sellkit_checkout'); ?>>SellKit Checkout Form</option>
     </select>
     <?php
-}
-
-// Render sellkit option field
-function fyfx_your_propfirm_plugin_sellkit_option_callback() {
-    $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
-    $sellkit_option = get_option('fyfx_your_propfirm_plugin_sellkit_option');
-    if ($checkout_form === 'sellkit_checkout') {
-        ?>
-        <select name="fyfx_your_propfirm_plugin_sellkit_option">
-            <option value="sellkit_billing" <?php selected($sellkit_option, 'sellkit_billing'); ?>>SellKit Billing</option>
-            <option value="sellkit_shipping" <?php selected($sellkit_option, 'sellkit_shipping'); ?>>SellKit Shipping</option>
-        </select>
-        <?php
-    } else {
-        echo 'N/A';
-    }
 }
 
 // Render request method field
