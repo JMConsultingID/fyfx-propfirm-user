@@ -373,7 +373,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             break; // Hanya mengambil SKU produk dari item pertama
         }
 
-        $mt_version = WC()->checkout->get_value('mt_version');
+        $mt_version = $_POST['mt_version'];
         if (!empty($mt_version)){
             $mt_version_value = $mt_version;
         }
