@@ -182,6 +182,28 @@ function add_custom_checkout_field($fields) {
 }
 add_filter('sellkit_checkout_billing_fields', 'add_custom_checkout_field');
 
+// Pastikan script ini ditempatkan dalam file functions.php tema aktif Anda di WordPress
+
+// Fungsi untuk menampilkan bidang kustom setelah hook woocommerce_before_checkout_shipping_form
+function display_custom_field_after_shipping_form() {
+    ?>
+    <div class="custom-field">
+        <h3><?php _e('Custom Field', 'woocommerce'); ?></h3>
+        <p><?php _e('This is a custom field description.', 'woocommerce'); ?></p>
+        <?php
+        woocommerce_form_field('custom_field', array(
+            'type' => 'text',
+            'class' => array('form-row-wide'),
+            'label' => __('Custom Field', 'woocommerce'),
+            'required' => true,
+        ), '');
+        ?>
+    </div>
+    <?php
+}
+add_action('woocommerce_before_checkout_shipping_form', 'display_custom_field_after_shipping_form');
+
+
 // Create user via API when successful payment is made
 function fyfx_your_propfirm_plugin_create_user($order_id) {
 	// Retrieve endpoint URL and API Key from plugin settings
