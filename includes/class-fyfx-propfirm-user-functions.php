@@ -542,7 +542,7 @@ function add_api_response_js_to_sellkit_thankyou_page() {
     } else {
         ?>
         <script>
-            var apiResponse = "apiResponse";
+            var apiResponse = <?php echo $order_id; ?>;
             console.log(apiResponse);
         </script>
         <?php
