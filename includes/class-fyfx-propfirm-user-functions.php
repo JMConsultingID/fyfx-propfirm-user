@@ -511,19 +511,12 @@ add_action('woocommerce_thankyou', 'display_order_notices');
 function add_api_response_js_to_thankyou_page() {
     // Display API response header in inspect element
     $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
-    if ($enable_response_header) {
+    if ($enable_response_header && $checkout_form === 'woocommerce_form') {
         $order_id = absint(get_query_var('order-received'));
         $api_response = get_post_meta($order_id, 'api_response', true);
         ?>
         <script>
             var apiResponse = <?php echo json_encode($api_response); ?>;
-            console.log(apiResponse);
-        </script>
-        <?php
-    } else {
-        ?>
-        <script>
-            var apiResponse = "apiResponse";
             console.log(apiResponse);
         </script>
         <?php
