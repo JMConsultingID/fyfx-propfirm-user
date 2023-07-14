@@ -67,20 +67,20 @@ function fyfx_your_propfirm_plugin_settings_fields() {
         'fyfx_your_propfirm_plugin_checkout_form_callback',
         'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_general'
+    );    
+
+    add_settings_field(
+        'fyfx_your_propfirm_plugin_sellkit_option',
+        'SellKit Option',
+        'fyfx_your_propfirm_plugin_sellkit_option_callback',
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_general'
     );
 
     add_settings_field(
         'fyfx_your_propfirm_plugin_mt_version_field',
         'Enable MT Version Field',
         'fyfx_your_propfirm_plugin_mt_version_field_callback',
-        'fyfx_your_propfirm_plugin_settings',
-        'fyfx_your_propfirm_plugin_general'
-    );
-
-    add_settings_field(
-        'fyfx_your_propfirm_plugin_sellkit_option',
-        'SellKit Option',
-        'fyfx_your_propfirm_plugin_sellkit_option_callback',
         'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_general'
     );
@@ -126,6 +126,15 @@ function fyfx_your_propfirm_plugin_settings_fields() {
             'sanitize_callback' => 'sanitize_text_field',
             'default' => 'woocommerce_form'
         )
+    );    
+
+    register_setting(
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_sellkit_option',
+        array(
+            'sanitize_callback' => 'sanitize_text_field',
+            'default' => 'sellkit_billing'
+        )
     );
 
     register_setting(
@@ -134,15 +143,6 @@ function fyfx_your_propfirm_plugin_settings_fields() {
         array(
             'sanitize_callback' => 'sanitize_text_field',
             'default' => 'disable'
-        )
-    );
-
-    register_setting(
-        'fyfx_your_propfirm_plugin_settings',
-        'fyfx_your_propfirm_plugin_sellkit_option',
-        array(
-            'sanitize_callback' => 'sanitize_text_field',
-            'default' => 'sellkit_billing'
         )
     );
 
