@@ -531,18 +531,18 @@ function add_api_response_js_to_sellkit_thankyou_page() {
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
     if ($enable_response_header && $checkout_form !== 'woocommerce_form') {
-        $order_id =  intval( str_replace( 'sellkit_step/business-thank-you/?order-key=', '', $wp->request ) );
-        $api_response = get_post_meta($order_id, 'api_response', true);
+        $key = isset( $_GET['order-key'] ) ? sanitize_text_field( $_GET['order-key'] ) : false;
+        $api_response = get_post_meta($key, 'api_response', true);
         ?>
         <script>
-            var apiResponse = <?php echo json_encode($order_id); ?>;
+            var apiResponse = <?php echo json_encode($key); ?>;
             console.log(apiResponse);
         </script>
         <?php
     } else {
         ?>
         <script>
-            var apiResponse = <?php echo json_encode($order_id); ?>;
+            var apiResponse = <?php echo json_encode($key); ?>;
             console.log(apiResponse);
         </script>
         <?php
