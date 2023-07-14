@@ -623,7 +623,7 @@ function js_script_response() {
         </script>
         <?php
     }
-    elseif ($enable_response_header strpos($current_url, '/sellkit_step/business-thank-you/') !== false) {
+    elseif ($enable_response_header && strpos($current_url, '/sellkit_step/business-thank-you/') !== false) {
         $key = isset( $_GET['order-key'] ) ? sanitize_text_field( $_GET['order-key'] ) : false;
         $current_page_id = get_queried_object_id();
         if ( empty( $key ) ) {
