@@ -621,12 +621,7 @@ function js_script_response() {
         <?php
     }
     else{
-        ?>
-        <script>
-            var apiResponse = 'silence is golden';
-            console.log(apiResponse);
-        </script>
-        <?php
+        return;
     }
 }
 do_action('hook_js_script_response');
