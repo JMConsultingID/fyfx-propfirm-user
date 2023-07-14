@@ -527,6 +527,7 @@ add_action('woocommerce_thankyou', 'add_api_response_js_to_thankyou_page');
 
 // Menambahkan data respons API ke halaman "Thank You"
 function add_api_response_js_to_sellkit_thankyou_page() {
+    global $wp;
     // Display API response header in inspect element
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
