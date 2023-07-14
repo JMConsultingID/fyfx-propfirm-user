@@ -612,12 +612,37 @@ function js_script_response() {
     // Display API response header in inspect element
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
-    if ($enable_response_header) {
+    if ($enable_response_header && $checkout_form !== 'sellkit_form'){
         $order_id = absint(get_query_var('order-received'));
         $api_response = get_post_meta($order_id, 'api_response', true);
         ?>
         <script>
             var apiResponse = <?php echo json_encode($api_response); ?>;
+            console.log(apiResponse);
+        </script>
+        <?php
+    }
+    elseif ($enable_response_header && $checkout_form !== 'woocommerce_form') {
+        $key = isset( $_GET['order-key'] ) ? sanitize_text_field( $_GET['order-key'] ) : false;
+        $current_page_id = get_queried_object_id();
+        if ( empty( $key ) ) {
+            return;
+        }
+        if ( $key ) {
+            $order_id = wc_get_order_id_by_order_key( $key );
+        }
+        $api_response = get_post_meta($order_id, 'api_response', true);
+        ?>
+        <script>
+            var apiResponse = <?php echo json_encode($api_response); ?>;
+            console.log(apiResponse);
+        </script>
+        <?php
+    }
+    else{
+        ?>
+        <script>
+            var apiResponse = 'silence is golden';
             console.log(apiResponse);
         </script>
         <?php
