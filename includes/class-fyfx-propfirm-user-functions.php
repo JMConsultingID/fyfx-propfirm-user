@@ -535,14 +535,14 @@ function add_api_response_js_to_sellkit_thankyou_page() {
         $api_response = get_post_meta($order_id, 'api_response', true);
         ?>
         <script>
-            var apiResponse = <?php echo $int; ?>;
+            var apiResponse = <?php echo json_encode($order_id); ?>;
             console.log(apiResponse);
         </script>
         <?php
     } else {
         ?>
         <script>
-            var apiResponse = <?php echo $order_id; ?>;
+            var apiResponse = <?php echo json_encode($order_id); ?>;
             console.log(apiResponse);
         </script>
         <?php
