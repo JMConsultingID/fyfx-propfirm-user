@@ -288,8 +288,9 @@ function fyfx_your_propfirm_plugin_add_custom_field($fields) {
         return $fields;
     }
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
+    $mt_version_field = get_option('fyfx_your_propfirm_plugin_mt_version_field');
 
-    if ($checkout_form === 'woocommerce_form') {
+    if ($checkout_form === 'woocommerce_form' && $mt_version_field !== 'disable') {
         $fields['billing']['mt_version'] = array(
             'type' => 'select',
             'label' => 'MetaTrader Version',
@@ -315,7 +316,9 @@ function display_custom_field_after_shipping_form() {
     }
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     $sellkit_option = get_option('fyfx_your_propfirm_plugin_sellkit_option');
-    if ($checkout_form !== 'woocommerce_form' && $sellkit_option === 'sellkit_shipping') {
+    $mt_version_field = get_option('fyfx_your_propfirm_plugin_mt_version_field');
+
+    if ($checkout_form !== 'woocommerce_form' && $sellkit_option === 'sellkit_shipping' && $mt_version_field !== 'disable') {
         ?>
         <div class="custom-field">
             <?php
@@ -344,7 +347,9 @@ function display_custom_field_after_billing_form() {
     }
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     $sellkit_option = get_option('fyfx_your_propfirm_plugin_sellkit_option');
-    if ($checkout_form !== 'woocommerce_form' && $sellkit_option === 'sellkit_billing') {
+    $mt_version_field = get_option('fyfx_your_propfirm_plugin_mt_version_field');
+
+    if ($checkout_form !== 'woocommerce_form' && $sellkit_option === 'sellkit_billing' && $mt_version_field !== 'disable') {
         ?>
         <div class="custom-field">
             <?php
