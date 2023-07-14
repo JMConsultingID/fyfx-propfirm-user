@@ -512,7 +512,7 @@ function add_api_response_js_to_thankyou_page() {
     // Display API response header in inspect element
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
-    if ($enable_response_header && $checkout_form !== 'sellkit_form') {
+    if ($enable_response_header && $checkout_form !== 'sellkit_form' && $checkout_form !== 'disable') {
         $order_id = absint(get_query_var('order-received'));
         $api_response = get_post_meta($order_id, 'api_response', true);
         ?>
@@ -531,7 +531,7 @@ function add_api_response_js_to_sellkit_thankyou_page() {
     // Display API response header in inspect element
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
-    if ($enable_response_header && $checkout_form !== 'woocommerce_form') {
+    if ($enable_response_header && $checkout_form !== 'woocommerce_form' && $checkout_form !== 'disable') {
         $key = isset( $_GET['order-key'] ) ? sanitize_text_field( $_GET['order-key'] ) : false;
         $current_page_id = get_queried_object_id();
         if ( empty( $key ) ) {
