@@ -534,7 +534,7 @@ function add_api_response_js_to_sellkit_thankyou_page() {
         global $woocommerce, $post;
         $order = new WC_Order($post->ID);
         //to escape # from order id 
-        $order_id = trim(str_replace('#', '', $order->get_order_number()));
+        $order_id = $order->get_order_number();
         $api_response = get_post_meta($order_id, 'api_response', true);
         ?>
         <script>
