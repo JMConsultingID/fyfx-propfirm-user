@@ -608,6 +608,20 @@ function js_script_response() {
         console.log(apResponse);
     </script>
     <?php
+
+    // Display API response header in inspect element
+    $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
+    $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
+    if ($enable_response_header && $checkout_form !== 'sellkit_form' && $checkout_form !== 'disable') {
+        $order_id = absint(get_query_var('order-received'));
+        $api_response = get_post_meta($order_id, 'api_response', true);
+        ?>
+        <script>
+            var apiResponse = <?php echo json_encode($api_response); ?>;
+            console.log(apiResponse);
+        </script>
+        <?php
+    }
 }
 do_action('hook_js_script_response');
 add_action('hook_js_script_response', 'js_script_response');
