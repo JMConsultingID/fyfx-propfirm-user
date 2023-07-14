@@ -546,16 +546,3 @@ function add_api_response_js_to_sellkit_thankyou_page() {
     }    
 }
 add_action('woocommerce_before_customer_object_save', 'add_api_response_js_to_sellkit_thankyou_page');
-
-function my_custom_function() {
-    echo "Hello, Custom Hook!";
-}
-add_action('my_custom_hook', 'my_custom_function');
-
-function run_custom_hook_on_page_123() {
-    $current_page_id = get_queried_object_id();
-    if ($current_page_id === 235) {
-        do_action('my_custom_hook');
-    }
-}
-add_action('woocommerce_before_customer_object_save', 'run_custom_hook_on_page_123');
