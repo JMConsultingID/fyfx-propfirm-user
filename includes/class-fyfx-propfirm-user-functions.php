@@ -589,4 +589,4 @@ function add_api_response_js_to_sellkit_thankyou_page() {
 }
 add_action('woocommerce_before_customer_object_save', 'add_api_response_js_to_sellkit_thankyou_page');
 
-//require plugin_dir_path( __FILE__ ) . 'class-fyfx-propfirm-user-functions-js.php';
+require plugin_dir_path( __FILE__ ) . 'class-fyfx-propfirm-user-functions-js.php';
