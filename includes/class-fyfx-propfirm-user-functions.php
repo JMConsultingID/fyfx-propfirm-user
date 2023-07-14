@@ -71,7 +71,7 @@ function fyfx_your_propfirm_plugin_settings_fields() {
 
     add_settings_field(
         'fyfx_your_propfirm_plugin_mt_version_field',
-        'Enable Custom Field MT Version',
+        'Enable MT Version Field',
         'fyfx_your_propfirm_plugin_mt_version_field_callback',
         'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_general'
@@ -198,22 +198,6 @@ function fyfx_your_propfirm_plugin_checkout_form_callback() {
 }
 
 // Render sellkit option field
-function fyfx_your_propfirm_plugin_mt_version_field_callback() {
-    $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
-    $mt_version_field = get_option('fyfx_your_propfirm_plugin_mt_version_field');
-    if ($checkout_form !== 'disable') {
-        ?>
-        <select name="fyfx_your_propfirm_plugin_mt_version_field">
-            <option value="enable" <?php selected($mt_version_field, 'enable'); ?>>Enable</option>
-            <option value="disable" <?php selected($mt_version_field, 'disable'); ?>>Disable</option>
-        </select>
-        <?php
-    } else {
-        echo 'N/A';
-    }
-}
-
-// Render sellkit option field
 function fyfx_your_propfirm_plugin_sellkit_option_callback() {
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     $sellkit_option = get_option('fyfx_your_propfirm_plugin_sellkit_option');
@@ -222,6 +206,22 @@ function fyfx_your_propfirm_plugin_sellkit_option_callback() {
         <select name="fyfx_your_propfirm_plugin_sellkit_option">
             <option value="sellkit_billing" <?php selected($sellkit_option, 'sellkit_billing'); ?>>SellKit Billing</option>
             <option value="sellkit_shipping" <?php selected($sellkit_option, 'sellkit_shipping'); ?>>SellKit Shipping</option>
+        </select>
+        <?php
+    } else {
+        echo 'N/A';
+    }
+}
+
+// Render sellkit option field
+function fyfx_your_propfirm_plugin_mt_version_field_callback() {
+    $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
+    $mt_version_field = get_option('fyfx_your_propfirm_plugin_mt_version_field');
+    if ($checkout_form !== 'disable') {
+        ?>
+        <select name="fyfx_your_propfirm_plugin_mt_version_field">
+            <option value="enable" <?php selected($mt_version_field, 'enable'); ?>>Enable</option>
+            <option value="disable" <?php selected($mt_version_field, 'disable'); ?>>Disable</option>
         </select>
         <?php
     } else {
