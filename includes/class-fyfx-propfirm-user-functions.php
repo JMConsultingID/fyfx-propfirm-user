@@ -543,20 +543,29 @@ function add_api_response_js_to_sellkit_thankyou_page() {
             console.log(apiResponse);
         </script>
         <?php
-    } else {
-        ?>
-        <script>
-            var apiResponse = <?php echo json_encode($api_response); ?>;
-            console.log(apiResponse);
-        </script>
-        <?php
-    }
-    
+    }    
 }
 add_action('elementor/element/sellkit-order-cart-details/settings/before_section_start', 'add_api_response_js_to_sellkit_thankyou_page');
 
 function my_custom_function() {
     echo "Hello, Custom Hook!";
+    // Display API response header in inspect element
+    $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
+    $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
+    if ($enable_response_header && $checkout_form !== 'woocommerce_form') {
+        $key = isset( $_GET['order-key'] ) ? sanitize_text_field( $_GET['order-key'] ) : false;
+        $current_page_id = get_queried_object_id();
+        if ( $key ) {
+            $order_id = wc_get_order_id_by_order_key( $key );
+        }
+        $api_response = get_post_meta($order_id, 'api_response', true);
+        ?>
+        <script>
+            var apiResponse = 'custom - ' <?php echo json_encode($api_response); ?>;
+            console.log(apiResponse);
+        </script>
+        <?php
+    } 
 }
 add_action('my_custom_hook', 'my_custom_function');
 
