@@ -593,8 +593,8 @@ function js_script_response() {
     echo "Hello, Custom Hook!";
     ?>
     <script>
-        var apiResponse = 'Test Hooks';
-        console.log(apiResponse);
+        var apResponse = 'Test Hooks';
+        console.log(apResponse);
     </script>
     <?php
 }
@@ -604,4 +604,4 @@ add_action('hook_js_script_response', 'js_script_response');
 function run_js_script_response() {
     do_action('hook_js_script_response');
 }
-add_action('wp', 'run_js_script_response');
+add_action('wp_footer', 'run_js_script_response');
