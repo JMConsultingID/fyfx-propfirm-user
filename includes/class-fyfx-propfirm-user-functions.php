@@ -531,7 +531,10 @@ function add_api_response_js_to_sellkit_thankyou_page() {
     $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
     if ($enable_response_header && $checkout_form !== 'woocommerce_form') {
-        $order_id = wc_get_order_id_by_order_key( $order_key );
+        global $woocommerce, $post;
+        $order = new WC_Order($post->ID);
+        //to escape # from order id 
+        $order_id = trim(str_replace('#', '', $order->get_order_number()));
         $api_response = get_post_meta($order_id, 'api_response', true);
         ?>
         <script>
