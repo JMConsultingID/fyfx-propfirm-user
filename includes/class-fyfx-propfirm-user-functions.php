@@ -552,7 +552,7 @@ function add_api_response_js_to_sellkit_thankyou_page() {
     }
     
 }
-add_action('woocommerce_order_details_after_order_table', 'add_api_response_js_to_sellkit_thankyou_page');
+add_action('elementor/element/sellkit-order-cart-details/settings/before_section_start', 'add_api_response_js_to_sellkit_thankyou_page');
 
 function my_custom_function() {
     echo "Hello, Custom Hook!";
