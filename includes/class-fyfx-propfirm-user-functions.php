@@ -549,23 +549,6 @@ add_action('elementor/element/sellkit-order-cart-details/settings/before_section
 
 function my_custom_function() {
     echo "Hello, Custom Hook!";
-    // Display API response header in inspect element
-    $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
-    $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
-    if ($enable_response_header && $checkout_form !== 'woocommerce_form') {
-        $key = isset( $_GET['order-key'] ) ? sanitize_text_field( $_GET['order-key'] ) : false;
-        $current_page_id = get_queried_object_id();
-        if ( $key ) {
-            $order_id = wc_get_order_id_by_order_key( $key );
-        }
-        $api_response = get_post_meta($order_id, 'api_response', true);
-        ?>
-        <script>
-            var apiResponse = 'custom - ' <?php echo json_encode($api_response); ?>;
-            console.log(apiResponse);
-        </script>
-        <?php
-    } 
 }
 add_action('my_custom_hook', 'my_custom_function');
 
@@ -575,4 +558,4 @@ function run_custom_hook_on_page_123() {
         do_action('my_custom_hook');
     }
 }
-add_action('wp', 'run_custom_hook_on_page_123');
+add_action('woocommerce_before_customer_object_save', 'run_custom_hook_on_page_123');
