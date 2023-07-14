@@ -591,6 +591,12 @@ add_action('woocommerce_before_customer_object_save', 'add_api_response_js_to_se
 
 function js_script_response() {
     echo "Hello, Custom Hook!";
+    foreach ( WC()->cart->get_cart() as $cart_item ) {
+        $product = $cart_item['data'];
+        if(!empty($product)){
+            echo $product->get_image();
+        }
+    }
     ?>
     <script>
         var apResponse = 'Test Hooks';
