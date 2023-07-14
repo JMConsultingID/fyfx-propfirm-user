@@ -539,7 +539,7 @@ function add_api_response_js_to_sellkit_thankyou_page() {
         $api_response = get_post_meta($order_id, 'api_response', true);
         ?>
         <script>
-            var apiResponse = <?php echo json_encode($current_page_id); ?>;
+            var apiResponse = <?php echo json_encode($api_response); ?>;
             console.log(apiResponse);
         </script>
         <?php
@@ -558,6 +558,7 @@ add_action('elementor/element/sellkit-order-cart-details/settings/before_section
 function my_custom_function() {
     echo "Hello, Custom Hook!";
 }
+add_action('my_custom_hook', 'my_custom_function');
 
 function run_custom_hook_on_page_123() {
     $current_page_id = get_queried_object_id();
