@@ -590,28 +590,8 @@ function add_api_response_js_to_sellkit_thankyou_page() {
 add_action('woocommerce_before_customer_object_save', 'add_api_response_js_to_sellkit_thankyou_page');
 
 function js_script_response() {
-    echo "Hello, Custom Hook!";
-    foreach ( WC()->cart->get_cart() as $cart_item ) {
-        $product = $cart_item['data'];
-        if(!empty($product)){
-            ?>
-            <script>
-                var apResponse = <?php echo json_encode($product->get_title()); ?>;
-                console.log(apResponse);
-            </script>
-            <?php
-        }
-    }
-    ?>
-    <script>
-        var apResponse = 'Test Hooks';
-        console.log(apResponse);
-    </script>
-    <?php
-
     // Display API response header in inspect element
     $current_url = $_SERVER['REQUEST_URI'];
-    $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
     if ($enable_response_header && strpos($current_url, '/checkout/order-received/') !== false){
         $order_id = absint(get_query_var('order-received'));
