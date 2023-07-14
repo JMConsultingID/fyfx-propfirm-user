@@ -510,6 +510,7 @@ add_action('woocommerce_thankyou', 'display_order_notices');
 // Menambahkan data respons API ke halaman "Thank You"
 function add_api_response_js_to_thankyou_page() {
     // Display API response header in inspect element
+    $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
     $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
     if ($enable_response_header && $checkout_form !== 'sellkit_form') {
         $order_id = absint(get_query_var('order-received'));
