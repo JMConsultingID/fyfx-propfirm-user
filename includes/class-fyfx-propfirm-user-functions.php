@@ -533,6 +533,9 @@ function add_api_response_js_to_sellkit_thankyou_page() {
     if ($enable_response_header && $checkout_form !== 'woocommerce_form') {
         $key = isset( $_GET['order-key'] ) ? sanitize_text_field( $_GET['order-key'] ) : false;
         $current_page_id = get_queried_object_id();
+        if ( empty( $key ) ) {
+            return;
+        }
         if ( $key ) {
             $order_id = wc_get_order_id_by_order_key( $key );
         }
