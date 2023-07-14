@@ -63,7 +63,7 @@ function fyfx_your_propfirm_plugin_settings_fields() {
 
     add_settings_field(
         'fyfx_your_propfirm_plugin_checkout_form',
-        'Checkout Form',
+        'Checkout Form Field MT Version',
         'fyfx_your_propfirm_plugin_checkout_form_callback',
         'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_general'
