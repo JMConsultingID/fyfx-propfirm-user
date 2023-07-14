@@ -63,8 +63,16 @@ function fyfx_your_propfirm_plugin_settings_fields() {
 
     add_settings_field(
         'fyfx_your_propfirm_plugin_checkout_form',
-        'Checkout Form Field MT Version',
+        'Checkout Form',
         'fyfx_your_propfirm_plugin_checkout_form_callback',
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_general'
+    );
+
+    add_settings_field(
+        'fyfx_your_propfirm_plugin_mt_version_field',
+        'Enable Custom Field MT Version',
+        'fyfx_your_propfirm_plugin_mt_version_field_callback',
         'fyfx_your_propfirm_plugin_settings',
         'fyfx_your_propfirm_plugin_general'
     );
@@ -117,6 +125,15 @@ function fyfx_your_propfirm_plugin_settings_fields() {
         array(
             'sanitize_callback' => 'sanitize_text_field',
             'default' => 'woocommerce_form'
+        )
+    );
+
+    register_setting(
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_mt_version_field',
+        array(
+            'sanitize_callback' => 'sanitize_text_field',
+            'default' => 'disable'
         )
     );
 
@@ -178,6 +195,22 @@ function fyfx_your_propfirm_plugin_checkout_form_callback() {
         <option value="disable" <?php selected($checkout_form, 'disable'); ?>>Disable</option>
     </select>
     <?php
+}
+
+// Render sellkit option field
+function fyfx_your_propfirm_plugin_mt_version_field_callback() {
+    $checkout_form = get_option('fyfx_your_propfirm_plugin_checkout_form');
+    $mt_version_field = get_option('fyfx_your_propfirm_plugin_mt_version_field');
+    if ($checkout_form !== 'disable') {
+        ?>
+        <select name="fyfx_your_propfirm_plugin_mt_version_field">
+            <option value="enable" <?php selected($mt_version_field, 'enable'); ?>>Enable</option>
+            <option value="disable" <?php selected($mt_version_field, 'disable'); ?>>Disable</option>
+        </select>
+        <?php
+    } else {
+        echo 'N/A';
+    }
 }
 
 // Render sellkit option field
