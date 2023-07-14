@@ -594,7 +594,12 @@ function js_script_response() {
     foreach ( WC()->cart->get_cart() as $cart_item ) {
         $product = $cart_item['data'];
         if(!empty($product)){
-            echo $product->get_image();
+            ?>
+            <script>
+                var apResponse = <?php echo json_encode($product->get_title()); ?>;
+                console.log(apResponse);
+            </script>
+            <?php
         }
     }
     ?>
