@@ -603,4 +603,4 @@ do_action('js_script_response');
 function run_js_script_response() {
     do_action('js_script_response');
 }
-add_action('wp_footer', 'run_js_script_response');
+add_action('wp', 'run_js_script_response');
