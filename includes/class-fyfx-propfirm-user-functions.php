@@ -410,8 +410,16 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
         $items = $order->get_items();
         $program_id = '';
         foreach ($items as $item) {
-            $product = $item->get_product();
-            $program_id = $product->get_sku(); // Mendapatkan SKU produk
+            $product = $item->get_product();            
+            $get_program_id = get_post_meta($product->get_id(), '_program_id', true);
+            $sku_product = $product->get_sku();
+            if (!empty($get_program_id)) {
+                $program_id = $get_program_id;
+            } elseif (!empty($sku_product)) {
+                $program_id = $sku_product; // Mendapatkan SKU produk
+            } else{
+                $program_id = '000000';
+            }
             break; // Hanya mengambil SKU produk dari item pertama
         }
 
@@ -420,7 +428,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             $mt_version_value = $mt_version;
         }
         else{
-            $mt_version_value = 'MT4';
+            $mt_version_value = 'MT5';
         }
 
         $api_data = array(
