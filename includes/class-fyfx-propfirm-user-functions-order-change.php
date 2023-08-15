@@ -16,7 +16,7 @@ function send_api_on_order_status_change($order_id, $old_status, $new_status, $o
         return;
     }
 
-    if (($old_status === 'on-hold' || $old_status === 'pending') && $new_status === 'completed') {
+    if (($old_status === 'on-hold' || $old_status === 'pending' || $old_status === 'failed' || $old_status === 'processing') && $new_status === 'completed') {
         $enable_response_header = get_option('fyfx_your_propfirm_plugin_enable_response_header');
         $user_email = $order->get_billing_email();
         $user_first_name = $order->get_billing_first_name();
@@ -33,8 +33,16 @@ function send_api_on_order_status_change($order_id, $old_status, $new_status, $o
         $items = $order->get_items();
         $program_id = '';
         foreach ($items as $item) {
-            $product = $item->get_product();
-            $program_id = $product->get_sku(); // Mendapatkan SKU produk
+            $product = $item->get_product();            
+            $get_program_id = get_post_meta($product->get_id(), '_program_id', true);
+            $sku_product = $product->get_sku();
+            if (!empty($get_program_id)) {
+                $program_id = $get_program_id;
+            } elseif (!empty($sku_product)) {
+                $program_id = $sku_product; // Mendapatkan SKU produk
+            } else{
+                $program_id = '000-000';
+            }
             break; // Hanya mengambil SKU produk dari item pertama
         }
 
