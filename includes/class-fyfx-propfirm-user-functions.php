@@ -428,7 +428,7 @@ function fyfx_your_propfirm_plugin_create_user($order_id) {
             $mt_version_value = $mt_version;
         }
         else{
-            $mt_version_value = 'MT5';
+            $mt_version_value = 'MT4';
         }
 
         $api_data = array(
