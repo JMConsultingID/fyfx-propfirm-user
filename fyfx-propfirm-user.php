@@ -103,6 +103,8 @@ function filter_action_fyfx_propfirm_links( $links ) {
 }
 add_filter( 'plugin_action_links_fyfx-propfirm-user/fyfx-propfirm-user.php', 'filter_action_fyfx_propfirm_links', 10, 1 );
 
+add_filter( 'acf/settings/remove_wp_meta_box', '__return_false');
+
 /**
  * Begins execution of the plugin.
  *
