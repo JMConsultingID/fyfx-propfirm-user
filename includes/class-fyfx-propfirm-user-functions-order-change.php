@@ -2,17 +2,27 @@
 // Fungsi untuk mengirimkan API saat status pesanan berubah dari "On Hold" menjadi "Completed"
 function send_api_on_order_status_change($order_id, $old_status, $new_status, $order) {
     // Retrieve endpoint URL and API Key from plugin settings
-    $endpoint_url = esc_attr(get_option('fyfx_your_propfirm_plugin_endpoint_url'));
-    $api_key = esc_attr(get_option('fyfx_your_propfirm_plugin_api_key'));
     $request_method = get_option('fyfx_your_propfirm_plugin_enable_response_header');
-
-    // Check if endpoint URL and API Key are provided
-    if (empty($endpoint_url) || empty($api_key)) {
-        return;
-    }
 
     $plugin_enabled = get_option('fyfx_your_propfirm_plugin_enabled');
     if ($plugin_enabled !== 'enable') {
+        return;
+    }
+
+    // Check the selected environment
+    $environment = get_option('fyfx_your_propfirm_plugin_environment');
+    if ($environment === 'sandbox') {
+        // Perform actions for Sandbox Environment
+        $endpoint_url = esc_attr(get_option('fyfx_your_propfirm_plugin_sandbox_endpoint_url'));
+        $api_key = esc_attr(get_option('fyfx_your_propfirm_plugin_sandbox_test_key'));
+    } else {
+        // Perform actions for Live Environment
+        $endpoint_url = esc_attr(get_option('fyfx_your_propfirm_plugin_endpoint_url'));
+        $api_key = esc_attr(get_option('fyfx_your_propfirm_plugin_api_key'));
+    }
+
+    // Check if endpoint URL and API Key are provided
+    if (empty($endpoint_url) || empty($api_key)) {
         return;
     }
 
