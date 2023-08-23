@@ -688,7 +688,6 @@ add_action('woocommerce_before_customer_object_save', 'add_api_response_js_to_se
 
 
 require plugin_dir_path( __FILE__ ) . 'class-fyfx-propfirm-user-functions-js.php';
-require plugin_dir_path( __FILE__ ) . 'class-fyfx-propfirm-user-functions-order-change.php';
 
 // Add a custom field to WooCommerce product
 function fyfx_your_propfirm_plugin_add_program_id_field() {
