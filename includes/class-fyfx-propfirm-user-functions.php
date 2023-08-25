@@ -103,6 +103,14 @@ function fyfx_your_propfirm_plugin_settings_fields() {
     );
 
     add_settings_field(
+        'fyfx_your_propfirm_plugin_default_mt_version_field',
+        'Select Default MT Version Field',
+        'fyfx_your_propfirm_plugin_default_mt_version_field_callback',
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_general'
+    );
+
+    add_settings_field(
         'fyfx_your_propfirm_plugin_mt_version_field',
         'Enable MT Version Field',
         'fyfx_your_propfirm_plugin_mt_version_field_callback',
@@ -177,6 +185,15 @@ function fyfx_your_propfirm_plugin_settings_fields() {
         array(
             'sanitize_callback' => 'sanitize_text_field',
             'default' => 'sellkit_billing'
+        )
+    );
+
+    register_setting(
+        'fyfx_your_propfirm_plugin_settings',
+        'fyfx_your_propfirm_plugin_default_mt_version_field',
+        array(
+            'sanitize_callback' => 'sanitize_text_field',
+            'default' => 'MT4'
         )
     );
 
@@ -294,6 +311,17 @@ function fyfx_your_propfirm_plugin_sellkit_option_callback() {
     } else {
         echo 'N/A';
     }
+}
+
+// Render Default MT Version form field
+function fyfx_your_propfirm_plugin_default_mt_version_field_callback() {
+    $default_mt = get_option('fyfx_your_propfirm_plugin_default_mt_version_field');
+    ?>
+    <select name="fyfx_your_propfirm_plugin_default_mt_version_field">
+        <option value="MT4" <?php selected($default_mt, 'MT4'); ?>>MT4 Version</option>
+        <option value="MT5" <?php selected($default_mt, 'MT5'); ?>>MT5 Version</option>
+    </select>
+    <?php
 }
 
 // Render sellkit option field
@@ -516,7 +544,12 @@ function send_api_on_order_status_change($order_id, $old_status, $new_status, $o
             $mt_version_value = $mt_version;
         }
         else{
-            $mt_version_value = 'MT4';
+            if (!empty($default_mt)){
+                $mt_version_value = $default_mt;
+            }
+            else{
+                $mt_version_value = 'MT4';
+            }
         }
 
         $api_data = array(
@@ -623,7 +656,9 @@ function fyfx_your_propfirm_plugin_send_wp_remote_post_request($endpoint_url, $a
     $response = wp_remote_post(
         $api_url,
         array(
-            'headers' => $headers,
+            'timeout' => 20,
+            'redirection' => 5,
+            'headers' => $headers,            
             'body' => json_encode($api_data)
         )
     );
